@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#150927" />
+    <title>Flow Client | 1.8.9 PvP Platform</title>
+    <meta
+      name="description"
+      content="Flow Client is a 1.8.9 PvP platform focused on clean UI, smooth performance, profile-driven mods, and safe QoL customization."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script defer src="./script.js"></script>
+  </head>
+  <body>
+    <div class="bg-grid" aria-hidden="true"></div>
+    <div class="bg-glow glow-one" aria-hidden="true"></div>
+    <div class="bg-glow glow-two" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Flow Client home">
+        <span class="brand-badge">F</span>
+        <span>Flow Client</span>
+      </a>
+
+      <nav>
+        <a href="#about">About</a>
+        <a href="#modules">Modules</a>
+        <a href="#download">Download</a>
+        <a href="#releases">Releases</a>
+      </nav>
+
+      <a class="header-link" href="https://github.com/trxpworks/FlowClient" target="_blank" rel="noreferrer">GitHub</a>
+    </header>
+
+    <main id="top">
+      <section class="hero reveal">
+        <div class="hero-copy">
+          <p class="eyebrow">1.8.9 Competitive Client</p>
+          <h1>Flow Client</h1>
+          <p class="lead">
+            A purple-themed PvP platform built for smooth HUD control, reliable profiles, and practical performance
+            tuning without combat automation.
+          </p>
+
+          <div class="hero-actions">
+            <a id="heroDownloadBtn" class="btn btn-primary" href="https://github.com/trxpworks/FlowClient/releases" target="_blank" rel="noreferrer">Download Latest</a>
+            <a id="heroReleaseBtn" class="btn btn-secondary" href="https://github.com/trxpworks/FlowClient/releases" target="_blank" rel="noreferrer">View Releases</a>
+          </div>
+
+          <div class="hero-chips">
+            <span>Offline Profile Login</span>
+            <span>Custom Profile Rail</span>
+            <span>Lunar-Style Center GUI</span>
+            <span>Flow Launcher Pipeline</span>
+          </div>
+        </div>
+
+        <article class="hero-panel" aria-label="Flow Client snapshot">
+          <h2>Current Build State</h2>
+          <p>Live status from GitHub releases.</p>
+          <div class="status-grid">
+            <div>
+              <span>Latest Version</span>
+              <strong id="latestVersion">Checking...</strong>
+            </div>
+            <div>
+              <span>Published</span>
+              <strong id="latestPublished">-</strong>
+            </div>
+            <div>
+              <span>Channel</span>
+              <strong id="latestChannel">-</strong>
+            </div>
+            <div>
+              <span>Download Status</span>
+              <strong id="downloadStatus" class="status-pill status-loading">Loading</strong>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="about" class="section reveal">
+        <div class="section-head">
+          <p class="eyebrow">Why Flow</p>
+          <h2>A client-first website, no overlay content</h2>
+          <p>
+            This website is dedicated to Flow Client only. It tracks Flow releases and links only Flow assets and
+            pages.
+          </p>
+        </div>
+
+        <div class="card-grid cols-3">
+          <article class="card">
+            <h3>UI Direction</h3>
+            <p>Centered modular interface inspired by premium PvP client UX with Flow branding and purple accents.</p>
+          </article>
+          <article class="card">
+            <h3>Safety Scope</h3>
+            <p>Visual, HUD, movement QoL, and performance controls only. No packet abuse or combat automation modules.</p>
+          </article>
+          <article class="card">
+            <h3>1.8.9 Focus</h3>
+            <p>Client and launcher roadmap are intentionally focused on Minecraft 1.8.9 for competitive consistency.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="modules" class="section reveal">
+        <div class="section-head">
+          <p class="eyebrow">Module Ecosystem</p>
+          <h2>Core categories currently being expanded</h2>
+        </div>
+
+        <div class="card-grid cols-4">
+          <article class="card compact">
+            <h3>PvP</h3>
+            <p>CPS, combo, reach display, armor status, and crosshair customization.</p>
+          </article>
+          <article class="card compact">
+            <h3>HUD</h3>
+            <p>FPS, coordinates, direction, scoreboard editor, ping, server IP, clock.</p>
+          </article>
+          <article class="card compact">
+            <h3>Visual</h3>
+            <p>Motion blur, clear water, weather control, custom sky, damage animations.</p>
+          </article>
+          <article class="card compact">
+            <h3>Utility</h3>
+            <p>Profile workflows, launcher update channels, and consistent config persistence.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="download" class="section reveal">
+        <div class="download-layout">
+          <div class="download-copy">
+            <p class="eyebrow">Download</p>
+            <h2>Flow Client Releases</h2>
+            <p>
+              When a new Flow release is published, setup and portable buttons update automatically. If there is no
+              release yet, the page clearly shows that state.
+            </p>
+
+            <div class="hero-actions">
+              <a id="setupBtn" class="btn btn-primary" href="https://github.com/trxpworks/FlowClient/releases" target="_blank" rel="noreferrer">Setup EXE</a>
+              <a id="portableBtn" class="btn btn-secondary" href="https://github.com/trxpworks/FlowClient/releases" target="_blank" rel="noreferrer">Portable EXE</a>
+            </div>
+          </div>
+
+          <aside id="downloadHint" class="download-hint">
+            <h3>Release Check</h3>
+            <p>Loading release details from GitHub...</p>
+          </aside>
+        </div>
+      </section>
+
+      <section id="releases" class="section reveal">
+        <div class="section-head">
+          <p class="eyebrow">Release Feed</p>
+          <h2>Recent Flow versions</h2>
+          <p id="feedHint">Loading timeline...</p>
+        </div>
+
+        <div id="releaseList" class="release-list">
+          <article class="release-item skeleton">
+            <div class="line"></div>
+            <div class="line short"></div>
+          </article>
+          <article class="release-item skeleton">
+            <div class="line"></div>
+            <div class="line short"></div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Flow Client</p>
+      <p>Made with &lt;3 by revenqe</p>
+      <p>Discord: revenqr</p>
+    </footer>
+  </body>
+</html>
