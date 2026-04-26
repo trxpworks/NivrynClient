@@ -1,4 +1,4 @@
-const REPO_OWNER = "trxpworks";
+﻿const REPO_OWNER = "trxpworks";
 const REPO_NAME = "FlowClient";
 
 const RELEASES_URL = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases?per_page=6`;
@@ -96,8 +96,20 @@ function scoreAsset(name, type) {
     score += 22;
   }
 
+  if (type === "setup" && /portable/.test(lower)) {
+    score -= 30;
+  }
+
   if (type === "portable" && /portable/.test(lower)) {
     score += 22;
+  }
+
+  if (type === "portable" && /(setup|installer|install|blockmap)/.test(lower)) {
+    score -= 34;
+  }
+
+  if (type === "portable" && lower.endsWith(".exe") && !/(setup|installer|install)/.test(lower)) {
+    score += 14;
   }
 
   if (lower.includes("debug") || lower.includes("source") || lower.includes("symbols")) {
