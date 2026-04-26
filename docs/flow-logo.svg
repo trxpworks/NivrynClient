@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Flow logo">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="45%" r="70%">
+      <stop offset="0" stop-color="#32115d"/>
+      <stop offset="0.62" stop-color="#11051f"/>
+      <stop offset="1" stop-color="#05020a"/>
+    </radialGradient>
+    <linearGradient id="flow" x1="20" y1="110" x2="112" y2="20" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6e28ff"/>
+      <stop offset="0.42" stop-color="#c64dff"/>
+      <stop offset="0.72" stop-color="#ff7aff"/>
+      <stop offset="1" stop-color="#ffffff"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="3.6" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0.65 0 1 0 0 0.18 0 0 1 0 1 0 0 0 0.82 0"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+  <rect x="7" y="7" width="114" height="114" rx="24" fill="none" stroke="#9d48ff" stroke-opacity=".55" stroke-width="2"/>
+  <path filter="url(#glow)" fill="url(#flow)" d="M27 101c22-29 43-53 73-75-10 2-24 7-39 17-9 6-18 13-27 22l-7 36Zm16-23c14-11 28-17 48-18 8 0 15-1 21-3-17 10-34 18-57 23l-12-2Zm4-27c12-11 25-17 43-20 8-1 15-3 22-6-16 11-32 20-53 27l-12-1Z"/>
+</svg>
