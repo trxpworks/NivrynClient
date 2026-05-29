@@ -1,46 +1,200 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#11051e" />
-  <title>Flow Client | v0.8.5 Stability + Premium CGUI</title>
-  <meta name="description" content="Flow Client is a Minecraft 1.8.9 PvP client focused on performance, customization, clean UI, stable launching, and safe QoL modules." />
-  <style>
-    :root{--bg:#07030d;--bg2:#120621;--panel:rgba(20,10,38,.78);--line:rgba(190,120,255,.28);--text:#fbf7ff;--muted:#d0bde9;--accent:#9d3cff;--accent2:#d66cff;--ok:#62f19c}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;color:var(--text);font-family:Segoe UI,Manrope,Arial,sans-serif;background:radial-gradient(900px 620px at 78% -10%,rgba(168,83,255,.42),transparent 62%),radial-gradient(760px 520px at 8% 20%,rgba(92,160,255,.2),transparent 58%),linear-gradient(180deg,var(--bg2),var(--bg));overflow-x:hidden}body:before{content:"";position:fixed;inset:0;z-index:-2;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:34px 34px;opacity:.15}.orb{position:fixed;z-index:-1;border-radius:999px;filter:blur(65px);pointer-events:none}.orb.a{width:360px;height:360px;right:-120px;top:-90px;background:rgba(189,77,255,.7)}.orb.b{width:310px;height:310px;left:-120px;top:420px;background:rgba(89,169,255,.42)}.wrap{width:min(1180px,calc(100% - 28px));margin:auto}.nav{position:sticky;top:14px;z-index:10;margin-top:14px;border:1px solid var(--line);border-radius:18px;background:rgba(9,4,19,.78);backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:space-between;padding:12px 14px;box-shadow:0 18px 55px rgba(0,0,0,.35)}.brand{display:flex;align-items:center;gap:11px;color:white;text-decoration:none;font-weight:900}.logo{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(145deg,#090512,#1b0830);border:1px solid rgba(224,180,255,.45);box-shadow:0 0 28px rgba(165,71,255,.32)}.logo svg{width:27px;filter:drop-shadow(0 0 9px #b74dff)}.navlinks{display:flex;gap:18px}.navlinks a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:700}.navlinks a:hover{color:white}.github{padding:9px 12px;border-radius:12px;text-decoration:none;color:white;font-weight:900;font-size:13px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:1px solid rgba(255,255,255,.22)}.hero{display:grid;grid-template-columns:1.07fr .93fr;gap:14px;margin-top:18px}.glass{border:1px solid var(--line);border-radius:24px;background:var(--panel);backdrop-filter:blur(18px) saturate(145%);box-shadow:0 24px 70px rgba(0,0,0,.35),inset 0 1px rgba(255,255,255,.035)}.hero-copy{padding:34px}.eyebrow{margin:0;color:#c899ff;letter-spacing:.18em;text-transform:uppercase;font-size:12px;font-weight:900}.hero h1{font-size:clamp(48px,7vw,86px);line-height:.93;margin:10px 0 0;letter-spacing:-.055em}.lead{font-size:17px;line-height:1.65;color:var(--muted);max-width:680px}.actions{display:flex;flex-wrap:wrap;gap:11px;margin-top:22px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:13px 17px;border-radius:13px;text-decoration:none;font-weight:900;border:1px solid transparent}.primary{color:white;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 16px 38px rgba(161,63,255,.34);border-color:rgba(255,255,255,.22)}.secondary{color:#f5ecff;background:rgba(37,18,66,.78);border-color:rgba(203,162,255,.35)}.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.chips span{font-size:12px;color:#eadcff;border:1px solid rgba(203,162,255,.32);border-radius:999px;padding:7px 10px;background:rgba(40,20,70,.75)}.hero-card{padding:24px;display:grid;place-items:center;text-align:center;min-height:410px;position:relative;overflow:hidden}.hero-card:before{content:"";position:absolute;inset:28px;border-radius:38px;background:radial-gradient(circle at 50% 28%,rgba(189,77,255,.38),transparent 34%),linear-gradient(135deg,rgba(82,30,139,.28),rgba(8,4,16,.5));border:1px solid rgba(219,158,255,.18)}.hero-inner{position:relative}.biglogo{width:150px;height:150px;margin:auto;border-radius:34px;background:linear-gradient(145deg,#090512,#1a082d);border:2px solid rgba(202,92,255,.55);display:grid;place-items:center;box-shadow:0 0 70px rgba(184,64,255,.34)}.biglogo svg{width:106px}.hero-card h2{font-size:40px;letter-spacing:.22em;margin:18px 0 2px}.tagline{color:#eadcff;letter-spacing:.22em;font-size:13px}.section{margin-top:14px;padding:26px}.section h2{font-size:clamp(28px,4vw,44px);line-height:1;margin:8px 0 0;letter-spacing:-.04em}.section p,.card p,.release p,.faq p{color:var(--muted);line-height:1.62}.grid{display:grid;gap:12px;margin-top:16px}.cols3{grid-template-columns:repeat(3,minmax(0,1fr))}.cols4{grid-template-columns:repeat(4,minmax(0,1fr))}.card,.release,.faq{border:1px solid rgba(202,157,255,.24);border-radius:18px;background:rgba(21,10,39,.72);padding:17px}.card h3,.release h3,.faq h3{margin:0;font-size:21px}.status{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:16px}.status div{padding:13px;border-radius:15px;border:1px solid rgba(202,157,255,.24);background:rgba(34,16,61,.72)}.status span{display:block;color:#cdb8ed;font-size:12px}.status strong{display:block;margin-top:5px}.pill{display:inline-flex;width:max-content;border-radius:999px;padding:5px 10px;border:1px solid rgba(202,157,255,.35);background:rgba(77,38,130,.55)}.good{color:#a8ffd3}.empty{color:#ffe0a4}.bad{color:#ffc0da}.mockgrid{display:grid;grid-template-columns:1.2fr .8fr;gap:13px;margin-top:16px}.mock{min-height:270px;border:1px solid var(--line);border-radius:24px;background:radial-gradient(circle at 60% 18%,rgba(190,77,255,.3),transparent 34%),linear-gradient(145deg,rgba(12,7,24,.95),rgba(32,13,54,.9));position:relative;overflow:hidden}.mock .rail{position:absolute;left:22px;top:22px;bottom:22px;width:128px;border-radius:17px;background:rgba(7,4,15,.75);border:1px solid rgba(202,157,255,.22)}.mock .search{position:absolute;left:174px;top:25px;width:260px;height:40px;border-radius:13px;border:1px solid rgba(202,157,255,.34);background:rgba(7,4,15,.7)}.mock .cardlet{position:absolute;width:185px;height:76px;border-radius:15px;border:1px solid rgba(202,157,255,.26);background:rgba(20,12,35,.82)}.mock .cardlet.a{left:174px;top:86px;border-color:rgba(218,112,255,.82);box-shadow:0 0 28px rgba(179,78,255,.2)}.mock .cardlet.b{left:374px;top:86px}.mock .cardlet.c{left:174px;top:178px}.mock .cardlet.d{left:374px;top:178px}.mock .pane{position:absolute;right:22px;top:74px;bottom:22px;width:220px;border-radius:17px;border:1px solid rgba(202,157,255,.26);background:rgba(10,5,20,.78)}.launcher .heroicon{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);width:220px;height:160px;border-radius:34px;border:1px solid rgba(202,157,255,.28);background:radial-gradient(circle,rgba(187,72,255,.36),rgba(10,5,20,.86))}.launcher .play{position:absolute;left:50%;bottom:42px;transform:translateX(-50%);width:180px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 18px 40px rgba(161,63,255,.26)}.download{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}.release-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}.mini{display:inline-flex;margin:8px 7px 0 0;padding:7px 10px;border-radius:999px;border:1px solid rgba(202,157,255,.35);background:rgba(38,19,67,.8);text-decoration:none;color:white;font-size:12px;font-weight:800}.footer{display:flex;justify-content:space-between;gap:10px;color:#aa93cc;font-size:13px;padding:22px 0 28px}.disabled{opacity:.58;pointer-events:none}.skeleton{height:10px;border-radius:999px;background:linear-gradient(90deg,rgba(130,99,186,.3),rgba(201,171,255,.52),rgba(130,99,186,.3));background-size:220% 100%;animation:shim 1.2s linear infinite}.skeleton.short{width:55%;margin-top:10px}@keyframes shim{from{background-position:220% 0}to{background-position:-220% 0}}@media(max-width:1040px){.hero,.download,.mockgrid{grid-template-columns:1fr}.cols4{grid-template-columns:repeat(2,minmax(0,1fr))}.navlinks{display:none}}@media(max-width:760px){.wrap{width:min(100% - 18px,1180px)}.nav{top:8px}.hero-copy,.section,.hero-card{padding:18px}.cols3,.cols4,.status,.release-list{grid-template-columns:1fr}.biglogo{width:116px;height:116px}.biglogo svg{width:78px}.hero-card h2{font-size:28px}.footer{flex-direction:column}.mock{min-height:230px}.mock .pane{display:none}.mock .cardlet{width:150px}.mock .cardlet.b,.mock .cardlet.d{left:338px}}
-  </style>
-</head>
-<body>
-  <div class="orb a"></div><div class="orb b"></div>
-  <header class="wrap nav">
-    <a class="brand" href="#top"><span class="logo"><svg viewBox="0 0 64 64"><path fill="url(#g)" d="M8 48c13-8 22-20 28-34 3-7 9-10 19-10-4 6-9 10-15 13-7 3-11 8-13 14 10-3 19-7 28-11-7 10-17 16-29 20-5 1-9 5-12 9 12-3 24-7 35-11-10 12-24 18-41 20z"/><defs><linearGradient id="g" x1="8" y1="54" x2="56" y2="4"><stop stop-color="#7a2cff"/><stop offset=".55" stop-color="#b243ff"/><stop offset="1" stop-color="#f08bff"/></linearGradient></defs></svg></span><span>Flow Client</span></a>
-    <nav class="navlinks"><a href="#about">About</a><a href="#modules">Modules</a><a href="#download">Download</a><a href="#releases">Releases</a><a href="#faq">FAQ</a></nav>
-    <a class="github" href="https://github.com/trxpworks/FlowClient" target="_blank" rel="noreferrer">GitHub</a>
-  </header>
-  <main id="top" class="wrap">
-    <section class="hero">
-      <div class="hero-copy glass"><p class="eyebrow">Minecraft 1.8.9 PvP Platform</p><h1>Performance. Customization. Flow.</h1><p class="lead">Flow Client is becoming a polished, shareable 1.8.9 client with a native launcher, readable premium mod menu, stable runtime setup, profile-based configuration, Discord RPC, and safe QoL modules.</p><div class="actions"><a id="heroDownloadBtn" class="btn primary" href="https://github.com/trxpworks/FlowClient/releases" target="_blank" rel="noreferrer">Download Latest</a><a class="btn secondary" href="#modules">Explore Mods</a></div><div class="chips"><span>Native 1.8.9 Launch</span><span>OptiFine Paused for Stability</span><span>Central Keybind Manager</span><span>Config Import / Export</span><span>Runtime Repair</span><span>No combat automation</span></div></div>
-      <aside class="hero-card glass"><div class="hero-inner"><div class="biglogo"><svg viewBox="0 0 64 64"><path fill="url(#g2)" d="M8 48c13-8 22-20 28-34 3-7 9-10 19-10-4 6-9 10-15 13-7 3-11 8-13 14 10-3 19-7 28-11-7 10-17 16-29 20-5 1-9 5-12 9 12-3 24-7 35-11-10 12-24 18-41 20z"/><defs><linearGradient id="g2" x1="8" y1="54" x2="56" y2="4"><stop stop-color="#7a2cff"/><stop offset=".55" stop-color="#b243ff"/><stop offset="1" stop-color="#f08bff"/></linearGradient></defs></svg></div><h2>FLOW CLIENT</h2><div class="tagline">1.8.9 COMPETITIVE CLIENT</div></div></aside>
-    </section>
-    <section class="section glass"><p class="eyebrow">Release Status</p><h2>Synced with GitHub releases</h2><p>The download buttons automatically choose setup and portable assets from the latest Flow release.</p><div class="status"><div><span>Latest Version</span><strong id="latestVersion">Checking...</strong></div><div><span>Published</span><strong id="latestPublished">-</strong></div><div><span>Channel</span><strong id="latestChannel">-</strong></div><div><span>Download Status</span><strong id="downloadStatus" class="pill">Loading</strong></div></div></section>
-    <section id="about" class="section glass"><p class="eyebrow">Why Flow</p><h2>Built like a real client, published like a real product</h2><p>v0.8.5 focuses on consumer stability first: readable CGUI text, safer asset setup, runtime diagnostics, profile persistence, and a mod hub that can grow without breaking already-working modules.</p><div class="grid cols3"><article class="card"><h3>Premium CGUI Direction</h3><p>Badlion-style cards, Lunar-style flow, readable contrast, search, favorites, settings pane, and central keybind manager.</p></article><article class="card"><h3>Consumer Setup</h3><p>First-run runtime setup, repair runtime, exact failed URL diagnostics, and safe fallback to existing Minecraft asset cache.</p></article><article class="card"><h3>Safe Scope</h3><p>Flow stays focused on HUD, visual, performance, cosmetics, and QoL features. No hidden autoclickers, packet abuse, or combat automation.</p></article></div></section>
-    <section id="modules" class="section glass"><p class="eyebrow">Module Ecosystem</p><h2>Core categories being expanded in batches</h2><div class="grid cols4"><article class="card"><h3>PvP</h3><p>Keystrokes, CPS, Combo, Reach, Hit Color, Hitboxes, Armor, Potion, Crosshair, ToggleSprint.</p></article><article class="card"><h3>HUD</h3><p>FPS, Ping, Coordinates, Direction, Clock, Memory, Pack Display, Protection, Saturation, Scoreboard.</p></article><article class="card"><h3>Visual</h3><p>Fullbright, Inventory Blur, Motion Blur, Clear Water, Weather, TimeChanger, FOV, Zoom, custom sky direction.</p></article><article class="card"><h3>Utility</h3><p>AutoGG, AutoText, Chat tools, Waypoints, Timers, Screenshot tools, server helpers, config import/export.</p></article><article class="card"><h3>Performance</h3><p>FPS Boost, entity culling direction, particle reduction, animation optimizer, low-end preset, RAM settings.</p></article><article class="card"><h3>Cosmetics</h3><p>Capes and themes today, with wings, hats, emotes, and profile cosmetics staged after stability.</p></article><article class="card"><h3>Profiles</h3><p>PvP, BedWars, SkyBlock, Survival, Low FPS, and custom profiles with JSON-backed persistence.</p></article><article class="card"><h3>Coming Soon</h3><p>Replay, Schematica, MiniMap, SkyblockAddons, Wings, and Emotes remain polished placeholders until safe.</p></article></div></section>
-    <section class="section glass"><p class="eyebrow">Preview</p><h2>The target feel: purple glass, readable cards, smooth launcher</h2><div class="mockgrid"><div class="mock"><div class="rail"></div><div class="search"></div><div class="cardlet a"></div><div class="cardlet b"></div><div class="cardlet c"></div><div class="cardlet d"></div><div class="pane"></div></div><div class="mock launcher"><div class="heroicon"></div><div class="play"></div></div></div></section>
-    <section id="download" class="section glass"><div class="download"><div><p class="eyebrow">Download</p><h2>Get Flow Client</h2><p>Use the setup build for a normal install. Use the portable build if you want to test without installing. OptiFine is intentionally paused until vanilla Forge runtime setup is consistently stable.</p><div class="actions"><a id="setupBtn" class="btn primary" href="https://github.com/trxpworks/FlowClient/releases" target="_blank" rel="noreferrer">Setup EXE</a><a id="portableBtn" class="btn secondary" href="https://github.com/trxpworks/FlowClient/releases" target="_blank" rel="noreferrer">Portable EXE</a></div></div><aside class="card"><h3>Install Notes</h3><p id="downloadHint">Checking GitHub release assets...</p></aside></div></section>
-    <section id="releases" class="section glass"><p class="eyebrow">Changelog</p><h2>Recent releases</h2><p id="feedHint">Loading timeline...</p><div id="releaseList" class="release-list"><article class="release"><div class="skeleton"></div><div class="skeleton short"></div></article><article class="release"><div class="skeleton"></div><div class="skeleton short"></div></article></div></section>
-    <section id="faq" class="section glass"><p class="eyebrow">FAQ</p><h2>Before installing</h2><div class="grid cols3"><article class="faq"><h3>Does Flow include OptiFine?</h3><p>No. OptiFine is paused for now and Flow does not redistribute OptiFine.</p></article><article class="faq"><h3>What Minecraft version?</h3><p>Flow is currently focused on Minecraft 1.8.9.</p></article><article class="faq"><h3>What if setup fails?</h3><p>Use Repair Runtime and Export Diagnostics in the launcher so the exact failed URL and runtime status can be reviewed.</p></article></div></section>
-  </main>
-  <footer class="wrap footer"><span>Flow Client</span><span>Made with &lt;3 by revenqe</span><span>Not affiliated with Mojang, Microsoft, Lunar Client, or Badlion Client.</span></footer>
-  <script>
-    const owner='trxpworks', repo='FlowClient', releasePage=`https://github.com/${owner}/${repo}/releases`, releasesUrl=`https://api.github.com/repos/${owner}/${repo}/releases?per_page=6`;
-    const $=id=>document.getElementById(id), setupBtns=[$('heroDownloadBtn'),$('setupBtn')].filter(Boolean), portableBtns=[$('portableBtn')].filter(Boolean);
-    const esc=v=>String(v||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;'), tag=v=>String(v||'').replace(/^v/i,'').trim(), date=v=>{const d=new Date(v||'');return isNaN(d)?'-':d.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});};
-    function score(n,t){n=String(n||'').toLowerCase();let s=0;if(n.endsWith('.exe'))s+=20;if(n.includes('flow'))s+=15;if(n.includes('launcher'))s+=8;if(t==='setup'&&/(setup|installer|install)/.test(n))s+=24;if(t==='setup'&&/portable/.test(n))s-=30;if(t==='portable'&&/portable/.test(n))s+=24;if(t==='portable'&&n.endsWith('.exe')&&!/(setup|installer|install|blockmap)/.test(n))s+=16;if(/blockmap|source|debug/.test(n))s-=30;return s;}
-    function best(rel,t){const ranked=(rel.assets||[]).filter(a=>a.browser_download_url).map(a=>({a,s:score(a.name,t)})).sort((x,y)=>y.s-x.s);return ranked[0]&&ranked[0].s>10?ranked[0].a.browser_download_url:'';}
-    function apply(btn,url){btn.href=url||releasePage;btn.classList.toggle('disabled',!url);btn.setAttribute('aria-disabled',url?'false':'true');}
-    function card(rel){const setup=best(rel,'setup'), portable=best(rel,'portable'), v=tag(rel.tag_name||rel.name), title=rel.name||rel.tag_name||'Release', text=String(rel.body||'No release notes provided.').replace(/[`*_>#]/g,'').replace(/\s+/g,' ').trim().slice(0,170);let links=`<a class="mini" href="${esc(rel.html_url||releasePage)}" target="_blank" rel="noreferrer">Notes</a>`;if(setup)links+=`<a class="mini" href="${esc(setup)}" target="_blank" rel="noreferrer">Setup</a>`;if(portable)links+=`<a class="mini" href="${esc(portable)}" target="_blank" rel="noreferrer">Portable</a>`;return `<article class="release"><h3>${esc(title)}</h3><p>${esc(text)}</p><p><strong>v${esc(v)}</strong> | ${esc(date(rel.published_at||rel.created_at))}</p>${links}</article>`;}
-    async function load(){try{const r=await fetch(releasesUrl,{headers:{Accept:'application/vnd.github+json'}});if(!r.ok)throw new Error('HTTP '+r.status);const rels=(await r.json()).filter(r=>!r.draft);if(!rels.length)throw new Error('No releases published yet');const latest=rels[0], setup=best(latest,'setup'), portable=best(latest,'portable');$('latestVersion').textContent='v'+tag(latest.tag_name||latest.name);$('latestPublished').textContent=date(latest.published_at||latest.created_at);$('latestChannel').textContent=latest.prerelease?'Preview':'Stable';$('downloadStatus').textContent=setup||portable?'Ready':'Partial';$('downloadStatus').className='pill '+(setup||portable?'good':'empty');setupBtns.forEach(b=>apply(b,setup));portableBtns.forEach(b=>apply(b,portable));$('downloadHint').innerHTML=`Latest <strong>v${esc(tag(latest.tag_name||latest.name))}</strong>. ${setup?'Setup detected.':'Setup asset missing.'} ${portable?'Portable detected.':'Portable asset missing.'}`;$('feedHint').textContent='Synced with FlowClient GitHub releases.';$('releaseList').innerHTML=rels.slice(0,4).map(card).join('');}catch(e){$('downloadStatus').textContent='Unavailable';$('downloadStatus').className='pill bad';$('latestVersion').textContent='Unavailable';$('downloadHint').textContent='Could not load release assets automatically. Use the GitHub releases page directly.';$('feedHint').textContent=String(e.message||e);$('releaseList').innerHTML=`<article class="release"><h3>Release feed unavailable</h3><p>${esc(e.message||e)}</p><a class="mini" href="${releasePage}" target="_blank" rel="noreferrer">Open Releases</a></article>`;setupBtns.concat(portableBtns).forEach(b=>apply(b,releasePage));}}
-    load();
-  </script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#08030f" />
+    <title>Flow Client | Premium Minecraft 1.8.9 Client</title>
+    <meta name="description" content="Flow Client is a modern Minecraft 1.8.9 client with a native launcher, premium mod menu, HUD customization, performance tuning, and safe quality-of-life modules." />
+    <meta property="og:title" content="Flow Client" />
+    <meta property="og:description" content="A purple, performance-focused Minecraft 1.8.9 client with a native launcher and premium mod UI." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="./flow-logo.png" />
+    <link rel="icon" href="./flow-logo.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script defer src="./script.js"></script>
+  </head>
+  <body>
+    <div class="site-bg" aria-hidden="true">
+      <div class="aurora aurora-a"></div>
+      <div class="aurora aurora-b"></div>
+      <div class="grid"></div>
+      <div class="stars"></div>
+    </div>
+
+    <header class="topbar" id="top">
+      <a class="brand" href="#top" aria-label="Flow Client home">
+        <img src="./flow-logo.svg" alt="" />
+        <span>Flow <strong>Client</strong></span>
+      </a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="#download">Download</a>
+        <a href="#features">Features</a>
+        <a href="#mods">Mods</a>
+        <a href="#launcher">Launcher</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <a class="nav-cta" href="https://github.com/trxpworks/FlowClient/releases" target="_blank" rel="noreferrer">GitHub Releases</a>
+    </header>
+
+    <main>
+      <section class="hero section-shell reveal">
+        <div class="hero-copy">
+          <div class="pill-row">
+            <span class="pill pulse-dot">Consumer-ready 1.8.9 build</span>
+            <span class="pill">Launcher + client bundle</span>
+          </div>
+          <h1>Performance. Customization. Flow.</h1>
+          <p class="hero-lead">Flow Client is a modern Minecraft 1.8.9 client built around a smooth native launcher, premium purple UI, profile-based configs, safe quality-of-life mods, and a clean path from download to first launch.</p>
+          <div class="hero-actions">
+            <a id="heroSetupBtn" class="btn primary" href="https://github.com/trxpworks/FlowClient/releases" target="_blank" rel="noreferrer">Download Setup</a>
+            <a id="heroPortableBtn" class="btn secondary" href="https://github.com/trxpworks/FlowClient/releases" target="_blank" rel="noreferrer">Portable EXE</a>
+          </div>
+          <div class="trust-strip" aria-label="Client highlights">
+            <span>Native runtime setup</span>
+            <span>HUD editor</span>
+            <span>Central keybinds</span>
+            <span>Config import/export</span>
+          </div>
+        </div>
+
+        <div class="hero-art" aria-label="Flow launcher preview">
+          <div class="orb orb-main"></div>
+          <div class="launcher-card glass-card">
+            <div class="launcher-side">
+              <img src="./flow-logo.svg" alt="" />
+              <span class="active-nav">Home</span>
+              <span>Mods</span>
+              <span>Settings</span>
+              <span>Logs</span>
+            </div>
+            <div class="launcher-stage">
+              <div class="mini-version">1.8.9 / Flow</div>
+              <img class="stage-logo" src="./flow-logo.svg" alt="Flow logo" />
+              <h2>FLOW CLIENT</h2>
+              <p>Performance. Customization. Flow.</p>
+              <button type="button">PLAY</button>
+            </div>
+            <div class="launcher-panels">
+              <div><strong>Status</strong><span>Runtime ready</span></div>
+              <div><strong>News</strong><span>Stability + Premium UI</span></div>
+              <div><strong>Quick Links</strong><span>Mods / Logs / Repair</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="download" class="download-band reveal">
+        <div>
+          <p class="eyebrow">Latest Release</p>
+          <h2 id="latestVersion">Checking GitHub...</h2>
+          <p id="latestSummary">Download buttons automatically point to the newest Flow Client release assets on GitHub.</p>
+        </div>
+        <div class="download-actions">
+          <a id="setupBtn" class="btn primary" href="https://github.com/trxpworks/FlowClient/releases" target="_blank" rel="noreferrer">Setup Installer</a>
+          <a id="portableBtn" class="btn secondary" href="https://github.com/trxpworks/FlowClient/releases" target="_blank" rel="noreferrer">Portable Build</a>
+          <a class="btn ghost" href="https://github.com/trxpworks/FlowClient" target="_blank" rel="noreferrer">Source</a>
+        </div>
+        <div class="release-meta">
+          <span id="releaseDate">Published: -</span>
+          <span id="releaseStatus">Status: loading</span>
+        </div>
+      </section>
+
+      <section class="section-shell split reveal" id="features">
+        <div class="section-heading sticky-heading">
+          <p class="eyebrow">Built Like A Client</p>
+          <h2>Everything needed for a public install flow.</h2>
+          <p>The release download is not just a shell. The launcher package includes the Flow Client mod jar, then downloads Minecraft and Forge libraries and assets from official sources during setup.</p>
+        </div>
+        <div class="feature-stack">
+          <article class="feature-card"><span>01</span><h3>Native Launcher</h3><p>Runtime setup wizard, Java 8 checks, repair tools, diagnostics export, and an isolated Flow game directory.</p></article>
+          <article class="feature-card"><span>02</span><h3>Premium Mod Menu</h3><p>Searchable module cards, category rail, favorites, right-side settings panel, readable glass styling, and responsive layout.</p></article>
+          <article class="feature-card"><span>03</span><h3>Config That Travels</h3><p>Profile-aware settings, module states, HUD layouts, theme choices, and import/export support for sharing setups.</p></article>
+          <article class="feature-card"><span>04</span><h3>Safe Competitive Scope</h3><p>Performance, HUD, visual, audio, cosmetics, and QoL modules without combat automation or packet abuse.</p></article>
+        </div>
+      </section>
+
+      <section id="mods" class="section-shell reveal">
+        <div class="section-heading center">
+          <p class="eyebrow">Module Roadmap</p>
+          <h2>Badlion/Lunar-inspired depth, staged safely.</h2>
+          <p>Flow now has a growing module catalog with complex systems staged as polished Coming Soon cards until they are stable.</p>
+        </div>
+        <div class="mod-grid">
+          <article class="mod-card active"><span>PvP</span><h3>Keystrokes, CPS, Crosshair</h3><p>Input overlays, click tracking, armor and potion displays, hit feedback, reach display, and control modules.</p></article>
+          <article class="mod-card active"><span>HUD</span><h3>FPS, Ping, Coordinates</h3><p>Readable overlays, scoreboard tuning, pack display, server address, memory, stopwatch, and layout editing.</p></article>
+          <article class="mod-card active"><span>Visual</span><h3>Fullbright, Blur, Overlays</h3><p>Motion blur, inventory blur, block overlay, item physics, time and weather visuals, clear water/glass, and glint controls.</p></article>
+          <article class="mod-card active"><span>Utility</span><h3>Waypoints, Chat, AutoText</h3><p>Useful client-side workflows with server-safe defaults, screenshots, resource packs, tooltips, and quick actions.</p></article>
+          <article class="mod-card active"><span>Performance</span><h3>Low-End Mode + FPS Boost</h3><p>Entity and particle reductions, animation optimizer, memory indicators, and practical low-spec presets.</p></article>
+          <article class="mod-card soon"><span>Advanced</span><h3>Replay, Schematica, MiniMap</h3><p>Large systems stay labeled Coming Soon until they can ship without breaking the client experience.</p></article>
+        </div>
+      </section>
+
+      <section class="section-shell preview reveal">
+        <div class="section-heading center"><p class="eyebrow">Client Experience</p><h2>The Flow interface direction.</h2></div>
+        <div class="ui-preview glass-card">
+          <aside>
+            <img src="./flow-logo.svg" alt="" />
+            <strong>Flow Client</strong>
+            <button class="selected">All Mods <span>76</span></button>
+            <button>HUD <span>26</span></button>
+            <button>PvP <span>5</span></button>
+            <button>Visual <span>15</span></button>
+            <button>Utility <span>9</span></button>
+          </aside>
+          <div class="preview-main">
+            <div class="preview-search">Search mods...</div>
+            <div class="preview-cards">
+              <div><strong>Keystrokes</strong><span>Shows your pressed keys.</span></div>
+              <div><strong>CPS Counter</strong><span>Tracks click speed.</span></div>
+              <div><strong>Armor Status</strong><span>Shows armor durability.</span></div>
+              <div><strong>Fullbright</strong><span>Brightens the world.</span></div>
+              <div><strong>Zoom</strong><span>Smooth camera zoom.</span></div>
+              <div><strong>Waypoints</strong><span>Save useful locations.</span></div>
+            </div>
+          </div>
+          <aside class="settings-preview">
+            <strong>Settings</strong>
+            <span>Scale</span><div class="slider"><i style="width: 62%"></i></div>
+            <span>Accent</span><div class="color-pill">#B05CFF</div>
+            <span>Background</span><div class="toggle on"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="launcher" class="section-shell timeline reveal">
+        <div class="section-heading center"><p class="eyebrow">Install Flow</p><h2>From download to game launch.</h2></div>
+        <div class="steps">
+          <article><span>1</span><h3>Download</h3><p>Choose Setup for normal installs or Portable for a single EXE test copy.</p></article>
+          <article><span>2</span><h3>Setup Runtime</h3><p>The launcher checks Java, downloads official Minecraft/Forge runtime files, and validates assets.</p></article>
+          <article><span>3</span><h3>Repair If Needed</h3><p>If a network request fails, use Repair Runtime or Export Diagnostics to share exact logs.</p></article>
+          <article><span>4</span><h3>Play</h3><p>Launch Flow Client 1.8.9 with the bundled client mod and isolated game directory.</p></article>
+        </div>
+      </section>
+
+      <section class="section-shell release-feed reveal" id="releases">
+        <div class="section-heading center"><p class="eyebrow">Release Feed</p><h2>Latest GitHub releases.</h2><p id="feedHint">Loading release notes...</p></div>
+        <div id="releaseList" class="release-list" aria-live="polite"></div>
+      </section>
+
+      <section id="faq" class="section-shell faq reveal">
+        <div class="section-heading center"><p class="eyebrow">FAQ</p><h2>Quick answers before installing.</h2></div>
+        <div class="faq-grid">
+          <details open><summary>Does the download include the client?</summary><p>Yes. The Flow launcher package includes the Flow Client mod jar. Minecraft libraries and assets are still downloaded from official Mojang and Forge sources at setup time.</p></details>
+          <details><summary>Is OptiFine included?</summary><p>No. OptiFine is paused for public stability and is not redistributed. The current public path focuses on a stable vanilla Forge runtime first.</p></details>
+          <details><summary>What Minecraft version is supported?</summary><p>Flow is focused on Minecraft 1.8.9 right now. Future versions are roadmap items, not current promises.</p></details>
+          <details><summary>Is Flow affiliated with Mojang, Lunar, or Badlion?</summary><p>No. Flow is an independent client project with original branding inspired by modern client UI patterns.</p></details>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div><img src="./flow-logo.svg" alt="" /><span>Flow Client</span></div>
+      <p>Not affiliated with Mojang, Microsoft, Lunar Client, or Badlion Client.</p>
+    </footer>
+  </body>
 </html>
