@@ -35,13 +35,13 @@ function assetScore(assetName, type) {
   let score = 0;
   if (name.endsWith(".exe")) score += 20;
   if (name.includes("flow")) score += 14;
-  if (name.includes("launcher")) score += 10;
-  if (type === "setup" && /(setup|installer|install)/.test(name)) score += 30;
-  if (type === "setup" && name.includes("portable")) score -= 40;
-  if (type === "portable" && name.includes("portable")) score += 30;
-  if (type === "portable" && /(setup|installer|install|blockmap)/.test(name)) score -= 40;
+  if (name.includes("launcher")) score += 8;
+  if (type === "setup" && /(setup|installer|install)/.test(name)) score += 36;
+  if (type === "setup" && /(portable|blockmap|yml|yaml)/.test(name)) score -= 45;
+  if (type === "portable" && name.includes("portable")) score += 36;
+  if (type === "portable" && /(setup|installer|install|blockmap|yml|yaml)/.test(name)) score -= 45;
   if (type === "portable" && name.endsWith(".exe") && !/(setup|installer|install)/.test(name)) score += 12;
-  if (/(debug|source|symbols|yml|yaml|blockmap)/.test(name)) score -= 18;
+  if (/(debug|symbols|source)/.test(name)) score -= 20;
   return score;
 }
 
@@ -54,15 +54,15 @@ function bestAsset(release, type) {
   return ranked[0]?.score > 10 ? ranked[0].asset : null;
 }
 
-function setButtons(buttons, asset, fallbackLabel) {
+function setButtons(buttons, asset, label) {
   for (const button of buttons) {
     if (asset) {
       button.href = asset.browser_download_url;
-      button.textContent = fallbackLabel;
+      button.textContent = label;
       button.setAttribute("data-asset", asset.name || "");
     } else {
       button.href = releasesPage;
-      button.textContent = `${fallbackLabel} (GitHub)`;
+      button.textContent = `${label} on GitHub`;
     }
   }
 }
@@ -74,13 +74,13 @@ function shortBody(body) {
     .replace(/\r?\n+/g, " ")
     .trim();
   if (!cleaned) return "Release notes available on GitHub.";
-  return cleaned.length > 190 ? `${cleaned.slice(0, 190)}...` : cleaned;
+  return cleaned.length > 210 ? `${cleaned.slice(0, 210)}...` : cleaned;
 }
 
 function renderReleaseList(releases) {
   if (!els.releaseList) return;
   if (!releases.length) {
-    els.releaseList.innerHTML = `<div class="release-item"><div><h3>No releases found</h3><p>GitHub did not return public releases yet.</p></div><a href="${releasesPage}">Open GitHub</a></div>`;
+    els.releaseList.innerHTML = `<article class="release-item"><div><h3>No public releases found</h3><p>Open GitHub Releases to check the latest downloadable Flow builds.</p></div><a href="${releasesPage}" target="_blank" rel="noreferrer">Open</a></article>`;
     return;
   }
 
@@ -102,19 +102,19 @@ async function loadReleases() {
     const response = await fetch(releasesUrl, { headers: { Accept: "application/vnd.github+json" } });
     if (!response.ok) throw new Error(`GitHub returned ${response.status}`);
     const releases = await response.json();
-    const stable = Array.isArray(releases) ? releases.find((release) => !release.draft && !release.prerelease) || releases[0] : null;
-
-    if (!stable) throw new Error("No public releases found");
+    const publicReleases = Array.isArray(releases) ? releases.filter((release) => !release.draft) : [];
+    const stable = publicReleases.find((release) => !release.prerelease) || publicReleases[0];
+    if (!stable) throw new Error("No public release assets found");
 
     const setup = bestAsset(stable, "setup");
     const portable = bestAsset(stable, "portable");
-    const tag = stable.tag_name || stable.name || "Latest Release";
+    const tag = stable.tag_name || stable.name || "Latest";
 
     if (els.latestVersion) els.latestVersion.textContent = `Flow Client ${tag}`;
     if (els.latestSummary) {
       els.latestSummary.textContent = setup || portable
-        ? "Latest public build is available. The installer includes the Flow launcher and bundled Flow Client jar."
-        : "Release found, but no EXE assets were detected. Open GitHub Releases to download manually.";
+        ? "Latest public build is ready. The installer bundles Flow Launcher and the Flow Client jar, then sets up official Minecraft runtime files on first launch."
+        : "Release found, but no Windows EXE assets were detected. Open GitHub Releases to download manually.";
     }
     if (els.releaseDate) els.releaseDate.textContent = `Published: ${formatDate(stable.published_at)}`;
     if (els.releaseStatus) els.releaseStatus.textContent = setup || portable ? "Status: assets ready" : "Status: release page only";
@@ -122,10 +122,10 @@ async function loadReleases() {
 
     setButtons(setupButtons, setup, "Download Setup");
     setButtons(portableButtons, portable, "Portable EXE");
-    renderReleaseList(releases.slice(0, 5));
+    renderReleaseList(publicReleases.slice(0, 5));
   } catch (error) {
     if (els.latestVersion) els.latestVersion.textContent = "Flow Client Releases";
-    if (els.latestSummary) els.latestSummary.textContent = `Could not load GitHub releases automatically: ${error.message}. Use the GitHub releases button instead.`;
+    if (els.latestSummary) els.latestSummary.textContent = `Could not load GitHub releases automatically: ${error.message}. Use the GitHub Releases button instead.`;
     if (els.releaseStatus) els.releaseStatus.textContent = "Status: GitHub fallback";
     if (els.feedHint) els.feedHint.textContent = "Release feed could not be loaded in this browser session.";
     renderReleaseList([]);
@@ -138,15 +138,13 @@ function initReveal() {
     items.forEach((item) => item.classList.add("revealed"));
     return;
   }
-
   const observer = new IntersectionObserver((entries) => {
     for (const entry of entries) {
       if (!entry.isIntersecting) continue;
       entry.target.classList.add("revealed");
       observer.unobserve(entry.target);
     }
-  }, { threshold: 0.15, rootMargin: "0px 0px -7% 0px" });
-
+  }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
   items.forEach((item) => observer.observe(item));
 }
 
