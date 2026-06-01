@@ -9,7 +9,7 @@
     <meta property="og:title" content="Flow Client" />
     <meta property="og:description" content="A modern purple Minecraft 1.8.9 client with a bundled launcher, runtime setup, premium mod UI, and safe quality-of-life modules." />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="./flow-logo.png" />
+    <meta property="og:image" content="./flow-logo.svg" />
     <link rel="icon" href="./flow-logo.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -36,7 +36,7 @@
         <a href="#features">Features</a>
         <a href="#mods">Mods</a>
         <a href="#launcher">Launcher</a>
-        <a href="#faq">FAQ</a>
+        <a href="./store.html">Store</a>
       </nav>
       <a class="header-button" href="https://github.com/trxpworks/FlowClient/releases" target="_blank" rel="noreferrer">Releases</a>
     </header>
@@ -191,6 +191,17 @@
         </div>
       </section>
 
+      <section id="store" class="section shell reveal">
+        <div class="store-callout">
+          <div>
+            <p class="eyebrow">Flow Store</p>
+            <h2>Cosmetics and premium themes are coming soon.</h2>
+            <p>The store is being built as a separate Flow surface for future cosmetics, themes, and supporter perks. For now, the public download stays focused on the launcher and client.</p>
+          </div>
+          <a class="button secondary" href="./store.html">Open Store Preview</a>
+        </div>
+      </section>
+
       <section class="release-section shell reveal" id="releases">
         <div class="section-title compact">
           <p class="eyebrow">Release feed</p>
@@ -198,19 +209,6 @@
           <p id="feedHint">Loading release notes...</p>
         </div>
         <div id="releaseList" class="release-list" aria-live="polite"></div>
-      </section>
-
-      <section id="faq" class="section shell faq reveal">
-        <div class="section-title compact">
-          <p class="eyebrow">FAQ</p>
-          <h2>Before you install.</h2>
-        </div>
-        <div class="faq-grid">
-          <details open><summary>Does the website download the full client?</summary><p>Yes. The release asset is the Flow Launcher package, and it includes the Flow Client jar inside the launcher resources. Official Minecraft and Forge runtime files are downloaded during setup.</p></details>
-          <details><summary>Is Flow only a launcher?</summary><p>No. The launcher is the delivery app. Once installed, it launches the bundled Flow Client mod on Minecraft 1.8.9.</p></details>
-          <details><summary>Is OptiFine included?</summary><p>No. OptiFine is paused for public stability and is not redistributed. Flow currently focuses on a stable vanilla Forge runtime.</p></details>
-          <details><summary>Is Flow affiliated with Mojang?</summary><p>No. Flow is independent, uses original branding, and is not affiliated with Mojang.</p></details>
-        </div>
       </section>
     </main>
 
