@@ -1,152 +1,38 @@
-const OWNER = "trxpworks";
-const REPO = "FlowClient";
-const releasesUrl = `https://api.github.com/repos/${OWNER}/${REPO}/releases?per_page=5`;
-const releasesPage = `https://github.com/${OWNER}/${REPO}/releases`;
-
-const els = {
-  latestVersion: document.getElementById("latestVersion"),
-  latestSummary: document.getElementById("latestSummary"),
-  releaseDate: document.getElementById("releaseDate"),
-  releaseStatus: document.getElementById("releaseStatus"),
-  releaseList: document.getElementById("releaseList"),
-  feedHint: document.getElementById("feedHint"),
-};
-
-const setupButtons = ["heroSetupBtn", "setupBtn"].map((id) => document.getElementById(id)).filter(Boolean);
-const portableButtons = ["heroPortableBtn", "portableBtn"].map((id) => document.getElementById(id)).filter(Boolean);
-
-function escapeHtml(value) {
-  return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-}
-
-function formatDate(input) {
-  const date = new Date(input);
-  if (Number.isNaN(date.getTime())) return "-";
-  return date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
-}
-
-function assetScore(assetName, type) {
-  const name = String(assetName || "").toLowerCase();
-  let score = 0;
-  if (name.endsWith(".exe")) score += 20;
-  if (name.includes("flow")) score += 14;
-  if (name.includes("launcher")) score += 8;
-  if (type === "setup" && /(setup|installer|install)/.test(name)) score += 36;
-  if (type === "setup" && /(portable|blockmap|yml|yaml)/.test(name)) score -= 45;
-  if (type === "portable" && name.includes("portable")) score += 36;
-  if (type === "portable" && /(setup|installer|install|blockmap|yml|yaml)/.test(name)) score -= 45;
-  if (type === "portable" && name.endsWith(".exe") && !/(setup|installer|install)/.test(name)) score += 12;
-  if (/(debug|symbols|source)/.test(name)) score -= 20;
-  return score;
-}
-
-function bestAsset(release, type) {
-  const assets = Array.isArray(release?.assets) ? release.assets : [];
-  const ranked = assets
-    .filter((asset) => asset?.browser_download_url)
-    .map((asset) => ({ asset, score: assetScore(asset.name, type) }))
-    .sort((a, b) => b.score - a.score);
-  return ranked[0]?.score > 10 ? ranked[0].asset : null;
-}
-
-function setButtons(buttons, asset, label) {
-  for (const button of buttons) {
-    if (asset) {
-      button.href = asset.browser_download_url;
-      button.textContent = label;
-      button.setAttribute("data-asset", asset.name || "");
-    } else {
-      button.href = releasesPage;
-      button.textContent = `${label} on GitHub`;
-    }
-  }
-}
-
-function shortBody(body) {
-  const cleaned = String(body || "")
-    .replace(/<!--[^]*?-->/g, "")
-    .replace(/[#>*_`\[\]()]/g, "")
-    .replace(/\r?\n+/g, " ")
-    .trim();
-  if (!cleaned) return "Release notes available on GitHub.";
-  return cleaned.length > 210 ? `${cleaned.slice(0, 210)}...` : cleaned;
-}
-
-function renderReleaseList(releases) {
-  if (!els.releaseList) return;
-  if (!releases.length) {
-    els.releaseList.innerHTML = `<article class="release-item"><div><h3>No public releases found</h3><p>Open GitHub Releases to check the latest downloadable Flow builds.</p></div><a href="${releasesPage}" target="_blank" rel="noreferrer">Open</a></article>`;
-    return;
-  }
-
-  els.releaseList.innerHTML = releases
-    .map((release) => `
-      <article class="release-item">
-        <div>
-          <h3>${escapeHtml(release.name || release.tag_name || "Flow Release")}</h3>
-          <p>${escapeHtml(formatDate(release.published_at))} - ${escapeHtml(shortBody(release.body))}</p>
-        </div>
-        <a href="${escapeHtml(release.html_url || releasesPage)}" target="_blank" rel="noreferrer">View</a>
-      </article>
-    `)
-    .join("");
-}
-
-async function loadReleases() {
-  try {
-    const response = await fetch(releasesUrl, { headers: { Accept: "application/vnd.github+json" } });
-    if (!response.ok) throw new Error(`GitHub returned ${response.status}`);
-    const releases = await response.json();
-    const publicReleases = Array.isArray(releases) ? releases.filter((release) => !release.draft) : [];
-    const stable = publicReleases.find((release) => !release.prerelease) || publicReleases[0];
-    if (!stable) throw new Error("No public release assets found");
-
-    const setup = bestAsset(stable, "setup");
-    const portable = bestAsset(stable, "portable");
-    const tag = stable.tag_name || stable.name || "Latest";
-
-    if (els.latestVersion) els.latestVersion.textContent = `Flow Client ${tag}`;
-    if (els.latestSummary) {
-      els.latestSummary.textContent = setup || portable
-        ? "Latest public build is ready. The installer bundles Flow Launcher and the Flow Client jar, then sets up official Minecraft runtime files on first launch."
-        : "Release found, but no Windows EXE assets were detected. Open GitHub Releases to download manually.";
-    }
-    if (els.releaseDate) els.releaseDate.textContent = `Published: ${formatDate(stable.published_at)}`;
-    if (els.releaseStatus) els.releaseStatus.textContent = setup || portable ? "Status: assets ready" : "Status: release page only";
-    if (els.feedHint) els.feedHint.textContent = "Pulled live from GitHub Releases.";
-
-    setButtons(setupButtons, setup, "Download Setup");
-    setButtons(portableButtons, portable, "Portable EXE");
-    renderReleaseList(publicReleases.slice(0, 5));
-  } catch (error) {
-    if (els.latestVersion) els.latestVersion.textContent = "Flow Client Releases";
-    if (els.latestSummary) els.latestSummary.textContent = `Could not load GitHub releases automatically: ${error.message}. Use the GitHub Releases button instead.`;
-    if (els.releaseStatus) els.releaseStatus.textContent = "Status: GitHub fallback";
-    if (els.feedHint) els.feedHint.textContent = "Release feed could not be loaded in this browser session.";
-    renderReleaseList([]);
-  }
-}
-
-function initReveal() {
-  const items = Array.from(document.querySelectorAll(".reveal"));
-  if (!("IntersectionObserver" in window)) {
-    items.forEach((item) => item.classList.add("revealed"));
-    return;
-  }
-  const observer = new IntersectionObserver((entries) => {
-    for (const entry of entries) {
-      if (!entry.isIntersecting) continue;
-      entry.target.classList.add("revealed");
-      observer.unobserve(entry.target);
-    }
-  }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
-  items.forEach((item) => observer.observe(item));
-}
-
+const OWNER="trxpworks";
+const REPO="FlowClient";
+const releasesUrl=`https://api.github.com/repos/${OWNER}/${REPO}/releases?per_page=5`;
+const releasesPage=`https://github.com/${OWNER}/${REPO}/releases`;
+const accountStorageKey="flowClient.localWebsiteAccount";
+const tabDefinitions=[
+  {id:"home",label:"Home",icon:"H",selectors:[".hero"]},
+  {id:"download",label:"Download",icon:"D",selectors:["#download"]},
+  {id:"features",label:"Features",icon:"F",selectors:["#features",".showcase"]},
+  {id:"mods",label:"Mods",icon:"M",selectors:["#mods"]},
+  {id:"launcher",label:"Launcher",icon:"L",selectors:["#launcher"]},
+  {id:"account",label:"Account",icon:"A",selectors:["#account"]},
+  {id:"store",label:"Store",icon:"S",selectors:["#store"]},
+  {id:"releases",label:"Releases",icon:"R",selectors:["#releases"]}
+];
+const els={latestVersion:document.getElementById("latestVersion"),latestSummary:document.getElementById("latestSummary"),releaseDate:document.getElementById("releaseDate"),releaseStatus:document.getElementById("releaseStatus"),releaseList:document.getElementById("releaseList"),feedHint:document.getElementById("feedHint")};
+const setupButtons=["heroSetupBtn","setupBtn"].map(id=>document.getElementById(id)).filter(Boolean);
+const portableButtons=["heroPortableBtn","portableBtn"].map(id=>document.getElementById(id)).filter(Boolean);
+function escapeHtml(value){return String(value??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#39;")}
+function formatDate(input){const date=new Date(input);return Number.isNaN(date.getTime())?"-":date.toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"})}
+function assetScore(assetName,type){const name=String(assetName||"").toLowerCase();let score=0;if(name.endsWith(".exe"))score+=20;if(name.includes("flow"))score+=14;if(name.includes("launcher"))score+=8;if(type==="setup"&&/(setup|installer|install)/.test(name))score+=36;if(type==="setup"&&/(portable|blockmap|yml|yaml)/.test(name))score-=45;if(type==="portable"&&name.includes("portable"))score+=36;if(type==="portable"&&/(setup|installer|install|blockmap|yml|yaml)/.test(name))score-=45;if(type==="portable"&&name.endsWith(".exe")&&!/(setup|installer|install)/.test(name))score+=12;if(/(debug|symbols|source)/.test(name))score-=20;return score}
+function bestAsset(release,type){const assets=Array.isArray(release?.assets)?release.assets:[];const ranked=assets.filter(asset=>asset?.browser_download_url).map(asset=>({asset,score:assetScore(asset.name,type)})).sort((a,b)=>b.score-a.score);return ranked[0]?.score>10?ranked[0].asset:null}
+function setButtons(buttons,asset,label){for(const button of buttons){if(asset){button.href=asset.browser_download_url;button.textContent=label;button.setAttribute("data-asset",asset.name||"")}else{button.href=releasesPage;button.textContent=`${label} on GitHub`}}}
+function shortBody(body){const cleaned=String(body||"").replace(/<!--[^]*?-->/g,"").replace(/[#>*_`\[\]()]/g,"").replace(/\r?\n+/g," ").trim();return cleaned?cleaned.length>210?`${cleaned.slice(0,210)}...`:cleaned:"Release notes available on GitHub."}
+function renderReleaseList(releases){if(!els.releaseList)return;if(!releases.length){els.releaseList.innerHTML=`<article class="release-item"><div><h3>No public releases found</h3><p>Open GitHub Releases to check the latest downloadable Flow builds.</p></div><a href="${releasesPage}" target="_blank" rel="noreferrer">Open</a></article>`;return}els.releaseList.innerHTML=releases.map(release=>`<article class="release-item"><div><h3>${escapeHtml(release.name||release.tag_name||"Flow Release")}</h3><p>${escapeHtml(formatDate(release.published_at))} - ${escapeHtml(shortBody(release.body))}</p></div><a href="${escapeHtml(release.html_url||releasesPage)}" target="_blank" rel="noreferrer">View</a></article>`).join("")}
+function ensureTabsInfrastructure(){for(const tab of tabDefinitions){for(const selector of tab.selectors){document.querySelectorAll(selector).forEach(panel=>{panel.dataset.panel=tab.id;panel.classList.add("tab-panel")})}}if(!document.querySelector(".side-tabs")){const aside=document.createElement("aside");aside.className="side-tabs";aside.setAttribute("aria-label","Flow website sections");aside.innerHTML=tabDefinitions.map((tab,index)=>`<button class="side-tab${index===0?" active":""}" type="button" data-tab="${tab.id}"><span>${tab.icon}</span>${tab.label}</button>`).join("");const header=document.querySelector(".site-header");document.body.insertBefore(aside,header||document.body.firstChild)}if(!document.getElementById("flow-tab-runtime-css")){const style=document.createElement("style");style.id="flow-tab-runtime-css";style.textContent=`.side-tabs{position:fixed;left:18px;top:98px;z-index:25;width:174px;display:grid;gap:10px;padding:14px;border:1px solid rgba(181,76,255,.32);border-radius:22px;background:rgba(7,3,14,.78);box-shadow:0 18px 54px rgba(0,0,0,.34);backdrop-filter:blur(20px)}.side-tab{display:flex;align-items:center;gap:10px;min-height:42px;padding:0 12px;border:1px solid transparent;border-radius:14px;color:#c8b7df;background:transparent;font:inherit;font-size:.85rem;font-weight:800;text-align:left;cursor:pointer}.side-tab span{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:8px;background:rgba(181,76,255,.16);font-size:.72rem;color:#f9f4ff}.side-tab.active{color:#fff;border-color:rgba(213,90,255,.62);background:linear-gradient(135deg,rgba(181,76,255,.84),rgba(122,44,255,.66));box-shadow:0 12px 32px rgba(132,44,255,.25)}.tab-panel{display:none}.tab-panel.active{display:block}@media (min-width:1180px){body{padding-left:210px}.site-header{width:min(1120px,calc(100% - 246px))}.shell{width:min(var(--max),calc(100% - 48px))}}@media (max-width:1179px){.side-tabs{position:sticky;top:86px;left:auto;width:min(100% - 32px,900px);margin:14px auto 0;grid-template-columns:repeat(4,minmax(0,1fr))}.side-tab{justify-content:center}.side-tab span{display:none}}@media (max-width:640px){.side-tabs{grid-template-columns:repeat(2,minmax(0,1fr));top:76px}.side-tab{font-size:.78rem}}`;document.head.appendChild(style)}for(const link of document.querySelectorAll("a[href^='#']")){const id=link.getAttribute("href").slice(1);if(tabDefinitions.some(tab=>tab.id===id))link.dataset.tabLink=id}}
+function setActiveTab(tabId,updateHash=true){let tabButtons=Array.from(document.querySelectorAll("[data-tab]"));let tabPanels=Array.from(document.querySelectorAll("[data-panel]"));const target=String(tabId||"home").replace("#","");const hasPanel=tabPanels.some(panel=>panel.dataset.panel===target||panel.id===target);const resolved=hasPanel?target:"home";for(const button of tabButtons){button.classList.toggle("active",button.dataset.tab===resolved);button.setAttribute("aria-selected",button.dataset.tab===resolved?"true":"false")}for(const panel of tabPanels){const active=panel.dataset.panel===resolved||panel.id===resolved;panel.classList.toggle("active",active);if(active)panel.classList.add("revealed")}if(updateHash&&window.location.hash!==`#${resolved}`)history.replaceState(null,"",`#${resolved}`)}
+function initTabs(){ensureTabsInfrastructure();for(const button of document.querySelectorAll("[data-tab]")){button.setAttribute("role","tab");button.setAttribute("aria-selected",button.classList.contains("active")?"true":"false");button.addEventListener("click",()=>setActiveTab(button.dataset.tab))}for(const link of document.querySelectorAll("[data-tab-link]")){link.addEventListener("click",event=>{event.preventDefault();setActiveTab(link.dataset.tabLink||link.getAttribute("href"))})}window.addEventListener("hashchange",()=>setActiveTab(window.location.hash.slice(1),false));setActiveTab(window.location.hash.slice(1)||"home",false)}
+async function loadReleases(){try{const response=await fetch(releasesUrl,{headers:{Accept:"application/vnd.github+json"}});if(!response.ok)throw new Error(`GitHub returned ${response.status}`);const releases=await response.json();const publicReleases=Array.isArray(releases)?releases.filter(release=>!release.draft):[];const stable=publicReleases.find(release=>!release.prerelease)||publicReleases[0];if(!stable)throw new Error("No public release assets found");const setup=bestAsset(stable,"setup");const portable=bestAsset(stable,"portable");const tag=stable.tag_name||stable.name||"Latest";if(els.latestVersion)els.latestVersion.textContent=`Flow Client ${tag}`;if(els.latestSummary)els.latestSummary.textContent=setup||portable?"Latest public build is ready. The installer bundles Flow Launcher and the Flow Client jar, then sets up official Minecraft runtime files on first launch.":"Release found, but no Windows EXE assets were detected. Open GitHub Releases to download manually.";if(els.releaseDate)els.releaseDate.textContent=`Published: ${formatDate(stable.published_at)}`;if(els.releaseStatus)els.releaseStatus.textContent=setup||portable?"Status: assets ready":"Status: release page only";if(els.feedHint)els.feedHint.textContent="Pulled live from GitHub Releases.";setButtons(setupButtons,setup,"Download Setup");setButtons(portableButtons,portable,"Portable EXE");renderReleaseList(publicReleases.slice(0,5))}catch(error){if(els.latestVersion)els.latestVersion.textContent="Flow Client Releases";if(els.latestSummary)els.latestSummary.textContent=`Could not load GitHub releases automatically: ${error.message}. Use the GitHub Releases button instead.`;if(els.releaseStatus)els.releaseStatus.textContent="Status: GitHub fallback";if(els.feedHint)els.feedHint.textContent="Release feed could not be loaded in this browser session.";renderReleaseList([])}}
+function initReveal(){const items=Array.from(document.querySelectorAll(".reveal"));if(!("IntersectionObserver" in window)){items.forEach(item=>item.classList.add("revealed"));return}const observer=new IntersectionObserver(entries=>{for(const entry of entries){if(!entry.isIntersecting)continue;entry.target.classList.add("revealed");observer.unobserve(entry.target)}},{threshold:.12,rootMargin:"0px 0px -8% 0px"});items.forEach(item=>observer.observe(item))}
+function sanitizeUsername(value){return String(value||"").trim().replace(/[^a-zA-Z0-9_]/g,"").slice(0,16)}
+function readWebsiteAccount(){try{const parsed=JSON.parse(localStorage.getItem(accountStorageKey)||"null");if(!parsed||typeof parsed!=="object")return null;const username=sanitizeUsername(parsed.username);if(!username||username.length<3)return null;return{username,email:String(parsed.email||"").trim(),createdAt:parsed.createdAt||new Date().toISOString()}}catch{return null}}
+function renderWebsiteAccount(){const accountStatus=document.getElementById("accountStatus");const accountUsername=document.getElementById("accountUsername");const accountEmail=document.getElementById("accountEmail");const accountLogout=document.getElementById("accountLogout");if(!accountStatus)return;const account=readWebsiteAccount();if(!account){accountStatus.textContent="No local Flow profile registered on this browser.";if(accountUsername)accountUsername.value="";if(accountEmail)accountEmail.value="";if(accountLogout)accountLogout.disabled=true;return}accountStatus.textContent=`Signed in locally as ${account.username}.`;if(accountUsername)accountUsername.value=account.username;if(accountEmail)accountEmail.value=account.email;if(accountLogout)accountLogout.disabled=false}
+function initWebsiteAccount(){const accountForm=document.getElementById("accountForm");const accountUsername=document.getElementById("accountUsername");const accountEmail=document.getElementById("accountEmail");const accountStatus=document.getElementById("accountStatus");const accountLogout=document.getElementById("accountLogout");renderWebsiteAccount();if(accountForm){accountForm.addEventListener("submit",event=>{event.preventDefault();const username=sanitizeUsername(accountUsername?.value);if(!username||username.length<3){if(accountStatus)accountStatus.textContent="Use a 3-16 character username with letters, numbers, or underscores.";return}localStorage.setItem(accountStorageKey,JSON.stringify({username,email:String(accountEmail?.value||"").trim(),createdAt:readWebsiteAccount()?.createdAt||new Date().toISOString()}));renderWebsiteAccount()})}if(accountLogout){accountLogout.addEventListener("click",()=>{localStorage.removeItem(accountStorageKey);renderWebsiteAccount()})}}
 initReveal();
+initTabs();
+initWebsiteAccount();
 loadReleases();
