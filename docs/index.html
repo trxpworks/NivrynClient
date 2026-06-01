@@ -16,6 +16,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./styles.css" />
     <script defer src="./script.js"></script>
+    <style>
+      .account-panel{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:24px;align-items:stretch;padding:28px;border-radius:var(--radius)}
+      .account-copy{display:flex;flex-direction:column;justify-content:center;min-width:0}.account-copy h2{margin:0;font-family:"Space Grotesk";font-size:clamp(2rem,4vw,3.7rem);line-height:1;letter-spacing:-.04em}.account-copy p{color:var(--muted);line-height:1.75}.account-status{width:fit-content;max-width:100%;margin-top:18px;padding:11px 13px;border:1px solid rgba(94,255,136,.18);border-radius:999px;color:#d9ffe2;background:rgba(94,255,136,.08);font-size:.88rem;overflow-wrap:anywhere}.account-card{display:grid;gap:14px;padding:20px;border:1px solid rgba(255,255,255,.1);border-radius:22px;background:rgba(5,2,11,.46)}.account-card label{display:grid;gap:8px;color:var(--text);font-size:.88rem;font-weight:700}.account-card label span{color:var(--dim);font-weight:600}.account-card input{width:100%;min-height:48px;padding:0 14px;border:1px solid rgba(255,255,255,.14);border-radius:14px;color:var(--text);background:rgba(255,255,255,.055);font:inherit;outline:none}.account-card input:focus{border-color:rgba(181,76,255,.72);box-shadow:0 0 0 3px rgba(181,76,255,.16)}.account-actions{display:grid;grid-template-columns:1fr .62fr;gap:12px;margin-top:4px}.account-actions .button{width:100%;border:0;cursor:pointer;font:inherit}.account-note{margin:0;color:var(--muted);font-size:.82rem;line-height:1.6}@media(max-width:1100px){.account-panel{grid-template-columns:1fr}}@media(max-width:760px){.account-actions{grid-template-columns:1fr}}
+    </style>
   </head>
   <body>
     <div class="background" aria-hidden="true">
@@ -36,6 +40,7 @@
         <a href="#features">Features</a>
         <a href="#mods">Mods</a>
         <a href="#launcher">Launcher</a>
+        <a href="#account">Account</a>
         <a href="./store.html">Store</a>
       </nav>
       <a class="header-button" href="https://github.com/trxpworks/FlowClient/releases" target="_blank" rel="noreferrer">Releases</a>
@@ -57,164 +62,52 @@
           </div>
           <div class="hero-proof" aria-label="Flow Client status highlights">
             <div><b>1.8.9</b><span>Forge runtime</span></div>
-            <div><b>0.8.5</b><span>Latest public track</span></div>
+            <div><b>0.8.6</b><span>Next public track</span></div>
             <div><b>Safe</b><span>No combat automation</span></div>
           </div>
         </div>
 
         <div class="hero-visual" aria-label="Flow Client product preview">
           <div class="launcher-window glass">
-            <div class="window-top">
-              <span></span><span></span><span></span>
-            </div>
+            <div class="window-top"><span></span><span></span><span></span></div>
             <div class="launcher-layout">
-              <aside class="launcher-rail">
-                <img src="./flow-logo.svg" alt="" />
-                <span class="active">Home</span>
-                <span>Mods</span>
-                <span>Settings</span>
-                <span>Logs</span>
-              </aside>
-              <section class="launcher-stage">
-                <small>Version 1.8.9 / Flow</small>
-                <img src="./flow-logo.svg" alt="Flow logo" />
-                <h2>FLOW CLIENT</h2>
-                <p>Performance. Customization. Flow.</p>
-                <button type="button">PLAY</button>
-              </section>
-              <aside class="launcher-cards">
-                <article><b>Status</b><span>Runtime ready</span></article>
-                <article><b>News</b><span>Stability + UI polish</span></article>
-                <article><b>Quick Links</b><span>Repair, logs, settings</span></article>
-              </aside>
+              <aside class="launcher-rail"><img src="./flow-logo.svg" alt="" /><span class="active">Home</span><span>Mods</span><span>Settings</span><span>Logs</span></aside>
+              <section class="launcher-stage"><small>Version 1.8.9 / Flow</small><img src="./flow-logo.svg" alt="Flow logo" /><h2>FLOW CLIENT</h2><p>Performance. Customization. Flow.</p><button type="button">PLAY</button></section>
+              <aside class="launcher-cards"><article><b>Status</b><span>Runtime ready</span></article><article><b>News</b><span>Stability + UI polish</span></article><article><b>Quick Links</b><span>Repair, logs, settings</span></article></aside>
             </div>
           </div>
         </div>
       </section>
 
       <section id="download" class="download-panel shell reveal">
-        <div class="download-copy">
-          <p class="eyebrow">Download Flow</p>
-          <h2 id="latestVersion">Checking latest GitHub release...</h2>
-          <p id="latestSummary">The setup installer includes the Flow launcher and bundled Flow Client jar. Minecraft libraries and assets are downloaded from official sources during runtime setup.</p>
-          <div class="release-meta">
-            <span id="releaseDate">Published: loading</span>
-            <span id="releaseStatus">Status: checking assets</span>
-          </div>
-        </div>
-        <div class="download-buttons">
-          <a id="setupBtn" class="button primary" href="https://github.com/trxpworks/FlowClient/releases" target="_blank" rel="noreferrer">Setup Installer</a>
-          <a id="portableBtn" class="button secondary" href="https://github.com/trxpworks/FlowClient/releases" target="_blank" rel="noreferrer">Portable Build</a>
-          <a class="button ghost" href="https://github.com/trxpworks/FlowClient" target="_blank" rel="noreferrer">View Source</a>
-        </div>
+        <div class="download-copy"><p class="eyebrow">Download Flow</p><h2 id="latestVersion">Checking latest GitHub release...</h2><p id="latestSummary">The setup installer includes the Flow launcher and bundled Flow Client jar. Minecraft libraries and assets are downloaded from official sources during runtime setup.</p><div class="release-meta"><span id="releaseDate">Published: loading</span><span id="releaseStatus">Status: checking assets</span></div></div>
+        <div class="download-buttons"><a id="setupBtn" class="button primary" href="https://github.com/trxpworks/FlowClient/releases" target="_blank" rel="noreferrer">Setup Installer</a><a id="portableBtn" class="button secondary" href="https://github.com/trxpworks/FlowClient/releases" target="_blank" rel="noreferrer">Portable Build</a><a class="button ghost" href="https://github.com/trxpworks/FlowClient" target="_blank" rel="noreferrer">View Source</a></div>
       </section>
 
       <section id="features" class="section shell reveal">
-        <div class="section-title">
-          <p class="eyebrow">Why Flow</p>
-          <h2>Built around the parts that make a client feel finished.</h2>
-          <p>Flow focuses on a stable install path first, then layers in the premium feel: profile-aware configs, readable UI, runtime diagnostics, and polished module controls.</p>
-        </div>
-        <div class="feature-grid">
-          <article class="feature-card"><span>01</span><h3>Friend-ready launcher</h3><p>First-run runtime setup, Java 8 checks, repair tools, logs, diagnostics export, and an isolated game directory.</p></article>
-          <article class="feature-card"><span>02</span><h3>Premium mod menu</h3><p>Dark glass layout, searchable module cards, favorites, category rail, right-side settings, and readable controls.</p></article>
-          <article class="feature-card"><span>03</span><h3>HUD editor</h3><p>Drag, scale, snap, preview, reset, import, and export HUD layouts without editing files by hand.</p></article>
-          <article class="feature-card"><span>04</span><h3>Profiles and configs</h3><p>PvP, BedWars, SkyBlock, Survival, Low FPS, and custom profiles with persistent module state.</p></article>
-          <article class="feature-card"><span>05</span><h3>Performance tools</h3><p>FPS boost controls, low-end mode, particle tuning, memory indicators, and render-focused settings.</p></article>
-          <article class="feature-card"><span>06</span><h3>Safe scope</h3><p>Client-side visual, HUD, utility, audio, cosmetic, and performance features. No packet abuse or combat automation.</p></article>
-        </div>
+        <div class="section-title"><p class="eyebrow">Why Flow</p><h2>Built around the parts that make a client feel finished.</h2><p>Flow focuses on a stable install path first, then layers in the premium feel: profile-aware configs, readable UI, runtime diagnostics, and polished module controls.</p></div>
+        <div class="feature-grid"><article class="feature-card"><span>01</span><h3>Friend-ready launcher</h3><p>First-run runtime setup, Java 8 checks, repair tools, logs, diagnostics export, and an isolated game directory.</p></article><article class="feature-card"><span>02</span><h3>Premium mod menu</h3><p>Dark glass layout, searchable module cards, favorites, category rail, right-side settings, and readable controls.</p></article><article class="feature-card"><span>03</span><h3>HUD editor</h3><p>Drag, scale, snap, preview, reset, import, and export HUD layouts without editing files by hand.</p></article><article class="feature-card"><span>04</span><h3>Profiles and configs</h3><p>PvP, BedWars, SkyBlock, Survival, Low FPS, and custom profiles with persistent module state.</p></article><article class="feature-card"><span>05</span><h3>Performance tools</h3><p>FPS boost controls, low-end mode, particle tuning, memory indicators, and render-focused settings.</p></article><article class="feature-card"><span>06</span><h3>Safe scope</h3><p>Client-side visual, HUD, utility, audio, cosmetic, and performance features. No packet abuse or combat automation.</p></article></div>
       </section>
 
       <section class="showcase shell reveal">
-        <div class="section-title compact">
-          <p class="eyebrow">Interface</p>
-          <h2>The Flow UI direction.</h2>
-        </div>
-        <div class="client-preview glass">
-          <aside class="mod-rail">
-            <div class="rail-brand"><img src="./flow-logo.svg" alt="" /><b>Flow Client</b></div>
-            <button class="selected">All Mods <span>76</span></button>
-            <button>HUD <span>26</span></button>
-            <button>PvP <span>5</span></button>
-            <button>Visual <span>15</span></button>
-            <button>Utility <span>9</span></button>
-            <button>Performance <span>5</span></button>
-          </aside>
-          <section class="mod-browser">
-            <div class="mod-toolbar"><span>Search mods...</span><div><i></i><i></i><i></i></div></div>
-            <div class="mod-heading"><h3>All Mods</h3><span>Search, favorite, configure</span></div>
-            <div class="module-grid">
-              <article class="module-card active"><b>Keystrokes</b><p>Shows keyboard and mouse input.</p><span></span></article>
-              <article class="module-card"><b>CPS Counter</b><p>Tracks left and right click speed.</p><span></span></article>
-              <article class="module-card"><b>Armor Status</b><p>Displays armor durability.</p><span></span></article>
-              <article class="module-card"><b>Fullbright</b><p>Brightens the world client-side.</p><span></span></article>
-              <article class="module-card"><b>Zoom</b><p>Smooth OptiFine-style zoom.</p><span></span></article>
-              <article class="module-card"><b>Waypoints</b><p>Save locations with colors.</p><span></span></article>
-            </div>
-          </section>
-          <aside class="settings-card">
-            <div class="settings-head"><b>Keystrokes</b><span class="toggle-on"></span></div>
-            <label>Scale <span>1.00</span></label><div class="range"><i style="width: 58%"></i></div>
-            <label>Spacing <span>2.0</span></label><div class="range"><i style="width: 44%"></i></div>
-            <label>Accent</label><div class="color-chip">#B05CFF</div>
-            <button type="button">Done</button>
-          </aside>
-        </div>
+        <div class="section-title compact"><p class="eyebrow">Interface</p><h2>The Flow UI direction.</h2></div>
+        <div class="client-preview glass"><aside class="mod-rail"><div class="rail-brand"><img src="./flow-logo.svg" alt="" /><b>Flow Client</b></div><button class="selected">All Mods <span>76</span></button><button>HUD <span>26</span></button><button>PvP <span>5</span></button><button>Visual <span>15</span></button><button>Utility <span>9</span></button><button>Performance <span>5</span></button></aside><section class="mod-browser"><div class="mod-toolbar"><span>Search mods...</span><div><i></i><i></i><i></i></div></div><div class="mod-heading"><h3>All Mods</h3><span>Search, favorite, configure</span></div><div class="module-grid"><article class="module-card active"><b>Keystrokes</b><p>Shows keyboard and mouse input.</p><span></span></article><article class="module-card"><b>CPS Counter</b><p>Tracks left and right click speed.</p><span></span></article><article class="module-card"><b>Armor Status</b><p>Displays armor durability.</p><span></span></article><article class="module-card"><b>Fullbright</b><p>Brightens the world client-side.</p><span></span></article><article class="module-card"><b>Zoom</b><p>Smooth OptiFine-style zoom.</p><span></span></article><article class="module-card"><b>Waypoints</b><p>Save locations with colors.</p><span></span></article></div></section><aside class="settings-card"><div class="settings-head"><b>Keystrokes</b><span class="toggle-on"></span></div><label>Scale <span>1.00</span></label><div class="range"><i style="width: 58%"></i></div><label>Spacing <span>2.0</span></label><div class="range"><i style="width: 44%"></i></div><label>Accent</label><div class="color-chip">#B05CFF</div><button type="button">Done</button></aside></div>
       </section>
 
-      <section id="mods" class="section shell reveal">
-        <div class="section-title">
-          <p class="eyebrow">Modules</p>
-          <h2>A staged module catalog with working basics first.</h2>
-          <p>The mod list is growing in safe batches. Big engine systems stay as Coming Soon until they are stable enough to ship cleanly.</p>
-        </div>
-        <div class="mod-showcase">
-          <article><span>PvP</span><h3>Keystrokes, CPS, Crosshair</h3><p>Input HUDs, armor status, potion status, hit feedback, reach display, and movement controls.</p></article>
-          <article><span>HUD</span><h3>FPS, Ping, Coordinates</h3><p>Scoreboard controls, server info, pack display, memory, stopwatch, timers, and layout editing.</p></article>
-          <article><span>Visual</span><h3>Fullbright, Blur, Overlays</h3><p>Block overlay, inventory blur, clear water, item physics, sky and weather visuals, and time control.</p></article>
-          <article><span>Utility</span><h3>Chat, AutoText, Waypoints</h3><p>Practical helpers for messages, screenshots, resource packs, coordinates, servers, and quick actions.</p></article>
-          <article><span>Performance</span><h3>Low-End Mode</h3><p>Entity culling, particle reducers, animation optimization, memory tools, and safer FPS presets.</p></article>
-          <article class="soon"><span>Advanced</span><h3>Replay, Schematica, MiniMap</h3><p>Large features remain clearly labeled until they have the backend quality they deserve.</p></article>
-        </div>
-      </section>
+      <section id="mods" class="section shell reveal"><div class="section-title"><p class="eyebrow">Modules</p><h2>A staged module catalog with working basics first.</h2><p>The mod list is growing in safe batches. Big engine systems stay as Coming Soon until they are stable enough to ship cleanly.</p></div><div class="mod-showcase"><article><span>PvP</span><h3>Keystrokes, CPS, Crosshair</h3><p>Input HUDs, armor status, potion status, hit feedback, reach display, and movement controls.</p></article><article><span>HUD</span><h3>FPS, Ping, Coordinates</h3><p>Scoreboard controls, server info, pack display, memory, stopwatch, timers, and layout editing.</p></article><article><span>Visual</span><h3>Fullbright, Blur, Overlays</h3><p>Block overlay, inventory blur, clear water, item physics, sky and weather visuals, and time control.</p></article><article><span>Utility</span><h3>Chat, AutoText, Waypoints</h3><p>Practical helpers for messages, screenshots, resource packs, coordinates, servers, and quick actions.</p></article><article><span>Performance</span><h3>Low-End Mode</h3><p>Entity culling, particle reducers, animation optimization, memory tools, and safer FPS presets.</p></article><article class="soon"><span>Advanced</span><h3>Replay, Schematica, MiniMap</h3><p>Large features remain clearly labeled until they have the backend quality they deserve.</p></article></div></section>
 
-      <section id="launcher" class="section shell reveal">
-        <div class="section-title">
-          <p class="eyebrow">Install flow</p>
-          <h2>Consumer setup without CMD or dev folders.</h2>
-        </div>
-        <div class="steps">
-          <article><span>1</span><h3>Download setup</h3><p>Install Flow Launcher from GitHub Releases or use the portable EXE for testing.</p></article>
-          <article><span>2</span><h3>Setup runtime</h3><p>Flow checks Java 8, metadata, Forge, libraries, assets, natives, and the bundled client jar.</p></article>
-          <article><span>3</span><h3>Repair if needed</h3><p>Retry failed downloads, use cached official files where safe, or export diagnostics for support.</p></article>
-          <article><span>4</span><h3>Launch Flow</h3><p>Play with an isolated Flow game directory and persistent module settings.</p></article>
-        </div>
-      </section>
+      <section id="launcher" class="section shell reveal"><div class="section-title"><p class="eyebrow">Install flow</p><h2>Consumer setup without CMD or dev folders.</h2></div><div class="steps"><article><span>1</span><h3>Download setup</h3><p>Install Flow Launcher from GitHub Releases or use the portable EXE for testing.</p></article><article><span>2</span><h3>Setup runtime</h3><p>Flow checks Java 8, metadata, Forge, libraries, assets, natives, and the bundled client jar.</p></article><article><span>3</span><h3>Repair if needed</h3><p>Retry failed downloads, use cached official files where safe, or export diagnostics for support.</p></article><article><span>4</span><h3>Launch Flow</h3><p>Play with an isolated Flow game directory and persistent module settings.</p></article></div></section>
 
-      <section id="store" class="section shell reveal">
-        <div class="store-callout">
-          <div>
-            <p class="eyebrow">Flow Store</p>
-            <h2>Cosmetics and premium themes are coming soon.</h2>
-            <p>The store is being built as a separate Flow surface for future cosmetics, themes, and supporter perks. For now, the public download stays focused on the launcher and client.</p>
-          </div>
-          <a class="button secondary" href="./store.html">Open Store Preview</a>
-        </div>
-      </section>
+      <section id="account" class="section shell reveal"><div class="account-panel glass"><div class="account-copy"><p class="eyebrow">Flow Account Preview</p><h2>Reserve a local Flow profile.</h2><p>This is the first website-side account surface for Flow. It stores a local preview profile in your browser for now, while the real synced account backend comes later.</p><div class="account-status" id="accountStatus">No local Flow profile registered on this browser.</div></div><form class="account-card" id="accountForm"><label>Flow username<input id="accountUsername" name="username" type="text" minlength="3" maxlength="16" autocomplete="username" placeholder="FlowUser" required /></label><label>Contact email <span>optional</span><input id="accountEmail" name="email" type="email" autocomplete="email" placeholder="you@example.com" /></label><div class="account-actions"><button class="button primary" type="submit">Register / Sign In</button><button class="button secondary" id="accountLogout" type="button">Log Out</button></div><p class="account-note">Launcher login still uses offline usernames for now. This website profile is a preview of the future synced Flow account system.</p></form></div></section>
 
-      <section class="release-section shell reveal" id="releases">
-        <div class="section-title compact">
-          <p class="eyebrow">Release feed</p>
-          <h2>Latest builds from GitHub.</h2>
-          <p id="feedHint">Loading release notes...</p>
-        </div>
-        <div id="releaseList" class="release-list" aria-live="polite"></div>
-      </section>
+      <section id="store" class="section shell reveal"><div class="store-callout"><div><p class="eyebrow">Flow Store</p><h2>Cosmetics and premium themes are coming soon.</h2><p>The store is being built as a separate Flow surface for future cosmetics, themes, and supporter perks. For now, the public download stays focused on the launcher and client.</p></div><a class="button secondary" href="./store.html">Open Store Preview</a></div></section>
+
+      <section class="release-section shell reveal" id="releases"><div class="section-title compact"><p class="eyebrow">Release feed</p><h2>Latest builds from GitHub.</h2><p id="feedHint">Loading release notes...</p></div><div id="releaseList" class="release-list" aria-live="polite"></div></section>
     </main>
 
-    <footer class="site-footer">
-      <div><img src="./flow-logo.svg" alt="" /><span>Flow Client</span></div>
-      <p>Not affiliated with Mojang.</p>
-    </footer>
+    <footer class="site-footer"><div><img src="./flow-logo.svg" alt="" /><span>Flow Client</span></div><p>Not affiliated with Mojang.</p></footer>
+    <script>
+      (function(){const key='flowClient.localWebsiteAccount';const form=document.getElementById('accountForm');const username=document.getElementById('accountUsername');const email=document.getElementById('accountEmail');const status=document.getElementById('accountStatus');const logout=document.getElementById('accountLogout');function clean(value){return String(value||'').trim().replace(/[^a-zA-Z0-9_]/g,'').slice(0,16)}function read(){try{const parsed=JSON.parse(localStorage.getItem(key)||'null');if(!parsed||typeof parsed!=='object')return null;const name=clean(parsed.username);if(!name||name.length<3)return null;return{username:name,email:String(parsed.email||'').trim(),createdAt:parsed.createdAt||new Date().toISOString()}}catch{return null}}function render(){if(!status)return;const account=read();if(!account){status.textContent='No local Flow profile registered on this browser.';if(username)username.value='';if(email)email.value='';if(logout)logout.disabled=true;return}status.textContent='Signed in locally as '+account.username+'.';if(username)username.value=account.username;if(email)email.value=account.email;if(logout)logout.disabled=false}if(form){form.addEventListener('submit',function(event){event.preventDefault();const name=clean(username&&username.value);if(!name||name.length<3){if(status)status.textContent='Use a 3-16 character username with letters, numbers, or underscores.';return}localStorage.setItem(key,JSON.stringify({username:name,email:String(email&&email.value||'').trim(),createdAt:(read()||{}).createdAt||new Date().toISOString()}));render()})}if(logout){logout.addEventListener('click',function(){localStorage.removeItem(key);render()})}render()})();
+    </script>
   </body>
 </html>
