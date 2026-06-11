@@ -1,0 +1,49 @@
+name: Announce release on Discord
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version shown in the test announcement
+        required: true
+        default: 0.0.0-test
+        type: string
+      notes:
+        description: Changelog text used for the test announcement
+        required: true
+        default: Test announcement from the Flow Client GitHub workflow.
+        type: string
+      dry_run:
+        description: Build payloads without posting to Discord
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: discord-release-${{ github.event.release.id || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  announce:
+    name: Send Discord announcements
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      DISCORD_ANNOUNCEMENTS_WEBHOOK: ${{ secrets.DISCORD_ANNOUNCEMENTS_WEBHOOK }}
+      DISCORD_CHANGELOG_WEBHOOK: ${{ secrets.DISCORD_CHANGELOG_WEBHOOK }}
+      DISCORD_UPDATE_ROLE_ID: ${{ vars.DISCORD_UPDATE_ROLE_ID }}
+      DRY_RUN: ${{ inputs.dry_run || 'false' }}
+      MANUAL_VERSION: ${{ inputs.version || '0.0.0-test' }}
+      MANUAL_NOTES: ${{ inputs.notes || 'Test announcement from the Flow Client GitHub workflow.' }}
+    steps:
+      - name: Check out announcement script
+        uses: actions/checkout@v4
+
+      - name: Send release to Discord
+        run: python .github/scripts/announce_discord_release.py
