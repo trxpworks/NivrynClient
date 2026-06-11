@@ -35,40 +35,79 @@ def load_event():
         return json.load(handle)
 
 
+def github_release(repository, release_tag):
+    tag = str(release_tag or "").strip()
+    if not tag or tag.lower() == "latest":
+        endpoint = f"https://api.github.com/repos/{repository}/releases/latest"
+    else:
+        endpoint = f"https://api.github.com/repos/{repository}/releases/tags/{urllib.parse.quote(tag, safe='')}"
+
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "User-Agent": "FlowClient-GitHub-Releases/1.1",
+        "X-GitHub-Api-Version": "2022-11-28",
+    }
+    token = env("GITHUB_TOKEN")
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+
+    request = urllib.request.Request(endpoint, headers=headers)
+    try:
+        with urllib.request.urlopen(request, timeout=20) as response:
+            return json.load(response)
+    except urllib.error.HTTPError as error:
+        response_body = error.read().decode("utf-8", errors="replace")
+        raise RuntimeError(
+            f"Could not load GitHub release {tag or 'latest'} (HTTP {error.code}): {response_body[:300]}"
+        ) from None
+    except urllib.error.URLError as error:
+        raise RuntimeError(f"Could not reach GitHub Releases: {error.reason}") from None
+
+
+def context_from_release(release, repository):
+    tag = str(release.get("tag_name") or "").strip()
+    version = re.sub(r"^[vV]", "", tag) or "Unknown"
+    return {
+        "test_mode": False,
+        "version": version,
+        "title": str(release.get("name") or tag or f"Flow Client {version}").strip(),
+        "notes": str(release.get("body") or "").strip(),
+        "url": str(release.get("html_url") or f"https://github.com/{repository}/releases").strip(),
+        "channel": "Preview" if release.get("prerelease") else "Stable",
+        "published_at": str(release.get("published_at") or "").strip(),
+        "assets": [
+            {
+                "name": str(asset.get("name") or "Download"),
+                "url": str(asset.get("browser_download_url") or ""),
+            }
+            for asset in release.get("assets", [])
+            if isinstance(asset, dict) and asset.get("browser_download_url")
+        ],
+        "repository": repository,
+    }
+
+
 def release_context():
     event_name = env("GITHUB_EVENT_NAME")
     event = load_event()
     repository = env("GITHUB_REPOSITORY", "trxpworks/FlowClient")
 
     if event_name == "release" and isinstance(event.get("release"), dict):
-        release = event["release"]
-        tag = str(release.get("tag_name") or "").strip()
-        version = re.sub(r"^[vV]", "", tag) or "Unknown"
-        return {
-            "manual": False,
-            "version": version,
-            "title": str(release.get("name") or tag or f"Flow Client {version}").strip(),
-            "notes": str(release.get("body") or "").strip(),
-            "url": str(release.get("html_url") or f"https://github.com/{repository}/releases").strip(),
-            "channel": "Preview" if release.get("prerelease") else "Stable",
-            "published_at": str(release.get("published_at") or "").strip(),
-            "assets": [
-                {
-                    "name": str(asset.get("name") or "Download"),
-                    "url": str(asset.get("browser_download_url") or ""),
-                }
-                for asset in release.get("assets", [])
-                if isinstance(asset, dict) and asset.get("browser_download_url")
-            ],
-            "repository": repository,
-        }
+        return context_from_release(event["release"], repository)
 
-    version = env("MANUAL_VERSION", "0.0.0-test")
+    if not is_true(env("TEST_MODE", "false")):
+        context = context_from_release(github_release(repository, env("RELEASE_TAG", "latest")), repository)
+        notes_override = env("NOTES_OVERRIDE")
+        if notes_override:
+            context["notes"] = notes_override
+        return context
+
+    version = env("TEST_VERSION", "0.0.0-test")
     return {
-        "manual": True,
+        "test_mode": True,
         "version": version,
         "title": f"Flow Client {version}",
-        "notes": env("MANUAL_NOTES", "Test announcement from the Flow Client GitHub workflow."),
+        "notes": env("TEST_NOTES", "Test announcement from the Flow Client GitHub workflow."),
         "url": f"https://github.com/{repository}/releases",
         "channel": "Workflow test",
         "published_at": datetime.now(timezone.utc).isoformat(),
@@ -170,8 +209,8 @@ def main():
     announcement_webhook = env("DISCORD_ANNOUNCEMENTS_WEBHOOK")
     changelog_webhook = env("DISCORD_CHANGELOG_WEBHOOK")
     role_id = env("DISCORD_UPDATE_ROLE_ID")
-    role_ping = role_id if role_id.isdigit() and not context["manual"] else ""
-    prefix = "[TEST] " if context["manual"] else ""
+    role_ping = role_id if role_id.isdigit() and not context["test_mode"] else ""
+    prefix = "[TEST] " if context["test_mode"] else ""
     timestamp = context["published_at"] or datetime.now(timezone.utc).isoformat()
 
     announcement_fields = [
