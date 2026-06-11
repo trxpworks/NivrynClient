@@ -6,20 +6,35 @@ on:
       - published
   workflow_dispatch:
     inputs:
-      version:
-        description: Version shown in the test announcement
+      release_tag:
+        description: Release tag to announce, or latest
+        required: true
+        default: latest
+        type: string
+      test_mode:
+        description: Label the message as TEST and use the test fields below
+        required: true
+        default: false
+        type: boolean
+      notes_override:
+        description: Optional changelog override for a manual production announcement
+        required: false
+        default: ""
+        type: string
+      test_version:
+        description: Version used only when test mode is enabled
         required: true
         default: 0.0.0-test
         type: string
-      notes:
-        description: Changelog text used for the test announcement
+      test_notes:
+        description: Changelog used only when test mode is enabled
         required: true
         default: Test announcement from the Flow Client GitHub workflow.
         type: string
       dry_run:
         description: Build payloads without posting to Discord
         required: true
-        default: true
+        default: false
         type: boolean
 
 permissions:
@@ -38,9 +53,13 @@ jobs:
       DISCORD_ANNOUNCEMENTS_WEBHOOK: ${{ secrets.DISCORD_ANNOUNCEMENTS_WEBHOOK }}
       DISCORD_CHANGELOG_WEBHOOK: ${{ secrets.DISCORD_CHANGELOG_WEBHOOK }}
       DISCORD_UPDATE_ROLE_ID: ${{ vars.DISCORD_UPDATE_ROLE_ID }}
+      GITHUB_TOKEN: ${{ github.token }}
       DRY_RUN: ${{ inputs.dry_run || 'false' }}
-      MANUAL_VERSION: ${{ inputs.version || '0.0.0-test' }}
-      MANUAL_NOTES: ${{ inputs.notes || 'Test announcement from the Flow Client GitHub workflow.' }}
+      RELEASE_TAG: ${{ inputs.release_tag || 'latest' }}
+      NOTES_OVERRIDE: ${{ inputs.notes_override || '' }}
+      TEST_MODE: ${{ inputs.test_mode || 'false' }}
+      TEST_VERSION: ${{ inputs.test_version || '0.0.0-test' }}
+      TEST_NOTES: ${{ inputs.test_notes || 'Test announcement from the Flow Client GitHub workflow.' }}
     steps:
       - name: Check out announcement script
         uses: actions/checkout@v6
