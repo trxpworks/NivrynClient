@@ -43,7 +43,7 @@ jobs:
       MANUAL_NOTES: ${{ inputs.notes || 'Test announcement from the Flow Client GitHub workflow.' }}
     steps:
       - name: Check out announcement script
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Send release to Discord
         run: python .github/scripts/announce_discord_release.py
