@@ -10,7 +10,8 @@ import urllib.request
 from datetime import datetime, timezone
 
 
-FLOW_COLOR = 0xFF5FA2
+NIVRYN_COLOR = 0x1ED8FF
+NIVRYN_AVATAR_URL = "https://nivryn-client.web.app/nivryn-logo.png"
 MAX_EMBED_DESCRIPTION = 3500
 WEBHOOK_PREFIXES = (
     "https://discord.com/api/webhooks/",
@@ -44,7 +45,7 @@ def github_release(repository, release_tag):
 
     headers = {
         "Accept": "application/vnd.github+json",
-        "User-Agent": "FlowClient-GitHub-Releases/1.1",
+        "User-Agent": "Nivryn-GitHub-Releases/1.0",
         "X-GitHub-Api-Version": "2022-11-28",
     }
     token = env("GITHUB_TOKEN")
@@ -70,7 +71,7 @@ def context_from_release(release, repository):
     return {
         "test_mode": False,
         "version": version,
-        "title": str(release.get("name") or tag or f"Flow Client {version}").strip(),
+        "title": str(release.get("name") or tag or f"Nivryn {version}").strip(),
         "notes": str(release.get("body") or "").strip(),
         "url": str(release.get("html_url") or f"https://github.com/{repository}/releases").strip(),
         "channel": "Preview" if release.get("prerelease") else "Stable",
@@ -106,8 +107,8 @@ def release_context():
     return {
         "test_mode": True,
         "version": version,
-        "title": f"Flow Client {version}",
-        "notes": env("TEST_NOTES", "Test announcement from the Flow Client GitHub workflow."),
+        "title": f"Nivryn {version}",
+        "notes": env("TEST_NOTES", "Test announcement from the Nivryn GitHub workflow."),
         "url": f"https://github.com/{repository}/releases",
         "channel": "Workflow test",
         "published_at": datetime.now(timezone.utc).isoformat(),
@@ -128,7 +129,7 @@ def summarize_markdown(markdown):
             break
     summary = "\n".join(lines).strip()
     if not summary:
-        return "A new Flow Client release is ready to download."
+        return "A new Nivryn release is ready to download."
     if len(summary) > 900:
         summary = summary[:897].rstrip() + "..."
     return summary
@@ -189,7 +190,7 @@ def post_webhook(name, webhook_url, payload, dry_run):
         data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
         headers={
             "Content-Type": "application/json",
-            "User-Agent": "FlowClient-GitHub-Releases/1.0",
+            "User-Agent": "Nivryn-GitHub-Releases/1.0",
         },
         method="POST",
     )
@@ -222,17 +223,18 @@ def main():
         announcement_fields.append({"name": "Release files", "value": downloads, "inline": False})
 
     announcement_payload = {
-        "username": "Flow Client Updates",
+        "username": "Nivryn Updates",
+        "avatar_url": NIVRYN_AVATAR_URL,
         "content": f"<@&{role_ping}>" if role_ping else "",
         "allowed_mentions": {"parse": [], "roles": [role_ping] if role_ping else []},
         "embeds": [
             {
-                "title": f"{prefix}Flow Client {context['version']} is now available",
+                "title": f"{prefix}Nivryn {context['version']} is now available",
                 "url": context["url"],
                 "description": summarize_markdown(context["notes"]),
-                "color": FLOW_COLOR,
+                "color": NIVRYN_COLOR,
                 "fields": announcement_fields,
-                "footer": {"text": context["repository"]},
+                "footer": {"text": "Nivryn"},
                 "timestamp": timestamp,
             }
         ],
@@ -243,14 +245,15 @@ def main():
     for index, chunk in enumerate(chunks, start=1):
         part_label = f" - Part {index}/{len(chunks)}" if len(chunks) > 1 else ""
         changelog_payload = {
-            "username": "Flow Client Changelog",
+            "username": "Nivryn Changelog",
+            "avatar_url": NIVRYN_AVATAR_URL,
             "allowed_mentions": {"parse": []},
             "embeds": [
                 {
-                    "title": f"{prefix}Flow Client {context['version']} changelog{part_label}",
+                    "title": f"{prefix}Nivryn {context['version']} changelog{part_label}",
                     "url": context["url"],
                     "description": chunk,
-                    "color": FLOW_COLOR,
+                    "color": NIVRYN_COLOR,
                     "footer": {"text": f"{context['channel']} release"},
                     "timestamp": timestamp,
                 }
@@ -262,9 +265,9 @@ def main():
     if summary_path:
         with open(summary_path, "a", encoding="utf-8") as summary:
             action = "Built Discord payloads for" if dry_run else "Posted"
-            summary.write(f"## Discord release announcement\n\n{action} Flow Client `{context['version']}`.\n")
+            summary.write(f"## Discord release announcement\n\n{action} Nivryn `{context['version']}`.\n")
 
-    print(f"\nDiscord release automation completed for Flow Client {context['version']}.")
+    print(f"\nDiscord release automation completed for Nivryn {context['version']}.")
     return 0
 
 
